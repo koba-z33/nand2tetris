@@ -13,7 +13,6 @@ CHIP Xor {
     OUT out;
 
     PARTS:
-    // Put your code here:
     Nand (a=a , b=b, out=Step1);
     Nand (a=a , b=Step1 , out=Step21);
     Nand (a=b , b=Step1 , out=Step22);
