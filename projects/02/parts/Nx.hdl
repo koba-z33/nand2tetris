@@ -20,5 +20,8 @@ CHIP Nx {
     // Nand(a=notx, b=nx, out=tmp1);
     // Nand(a=x, b=notnx, out=tmp2);
     // Nand(a=tmp1, b=tmp2, out=out);
-    Xor(a=x, b=nx, out=out);
+    // Xor(a=x, b=nx, out=out);
+    Not(in=x , out=notx);
+    Mux(a=x, b=notx, sel=nx, out=out);
+    
 }
