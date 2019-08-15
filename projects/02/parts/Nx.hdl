@@ -13,11 +13,5 @@ CHIP Nx {
 
     PARTS:
     Not(in=x, out=notx);
-    Not(in=nx, out=notnx);
-    // And(a=notx, b=nx, out=tmp1);
-    // And(a=x, b=notnx, out=tmp2);
-    // Or(a=tmp1, b=tmp2, out=out);
-    Nand(a=notx, b=nx, out=tmp1);
-    Nand(a=x, b=notnx, out=tmp2);
-    Nand(a=tmp1, b=tmp2, out=out);
+    Mux(a=x, b=notx, sel=nx, out=out);
 }
