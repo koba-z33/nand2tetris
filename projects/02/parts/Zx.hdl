@@ -12,7 +12,5 @@ CHIP Zx {
     OUT out;
 
     PARTS:
-    // Not(in=zx, out=notzx);
-    // And(a=x, b=zx, out=out);
     Mux(a=x, b=false, sel=zx, out=out);
 }
