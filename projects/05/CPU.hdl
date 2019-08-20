@@ -39,5 +39,54 @@ CHIP CPU {
         pc[15];          // address of next instruction
 
     PARTS:
-    // Put your code here:
+    // A_Cmd  0  v  v  v  v  v  v  v  v  v  v  v  v  v  v  v
+    //       15 14 13 12 11 10 09 08 07 06 05 04 03 02 01 00
+    // C_Cmd  1  1  1  a c1 c2 c3 c4 c5 c6 d1 d2 d3 j1 j2 j3
+    //                AM                    A  D  M  <  =  >
+
+    // acmd = 1 if instruction[15] == 0
+    Not(in=instruction[15], out=acmd);
+
+    // A-Register
+    Mux16(a=outalu,
+        b=instruction,
+        sel=acmd,
+        out=ina);
+    Or(a=acmd, b=instruction[5], out=loada);
+    ARegister(in=ina, load=loada, out=outa, out[0..14]=addressM);
+
+    // D-Register
+    Mux(a=instruction[4], b=false, sel=acmd, out=loadd);
+    DRegister(in=outalu, load=loadd, out=outd);
+
+    // AM-Mux
+    Mux16(a=outa, b=inM, sel=instruction[12], out=outam);
+
+    // ALU
+    ALU(x=outd, y=outam,
+        zx=instruction[11],
+        nx=instruction[10],
+        zy=instruction[9],
+        ny=instruction[8],
+        f=instruction[7],
+        no=instruction[6], 
+        out=outalu, out=outM,
+        zr=outzr,
+        ng=outng);
+    
+    // write-M
+    Mux(a=instruction[3], b=false, sel=acmd, out=writeM);
+
+    // PC
+    Or(a=outzr, b=outng, out=outzrng);
+    Not(in=outzrng, out=outpo);
+
+    And(a=instruction[2], b=outng, out=loadng);
+    And(a=instruction[1], b=outzr, out=loadzr);
+    And(a=instruction[0], b=outpo, out=loadpo);
+    Or(a=loadng, b=loadzr, out=loadngzr);
+    Or(a=loadngzr, b=loadpo, out=loadngzrpo);
+    And(a=loadngzrpo, b=instruction[15], out=loadpc);
+
+    PC(in=outa, load=loadpc, inc=true, reset=reset, out[0..14]=pc);
 }
