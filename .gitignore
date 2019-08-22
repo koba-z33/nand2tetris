@@ -1,3 +1,6 @@
 # *.out は、*.tstの実行結果ですので、ソース管理しない。
 *.out
 *.hack
+
+# python venv deirectory
+venv
