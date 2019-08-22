@@ -2,5 +2,8 @@
 *.out
 *.hack
 
-# python venv deirectory
+# python venv directory
 venv
+
+# python cache directory
+*__pycache__
