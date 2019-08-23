@@ -1,2 +1,2 @@
-from .commandline import CommandLine, CommandType
-from .commandtype import CommandType
+from .commandline import CommandLine, CommandType   # noqa
+from .commandtype import CommandType                # noqa
