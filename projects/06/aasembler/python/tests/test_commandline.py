@@ -1,6 +1,6 @@
 import pytest
 
-from n2tassembler.commandline import CommandLine, CommandType
+from n2tassembler import CommandLine, CommandType
 
 
 def test_init():
@@ -46,3 +46,10 @@ def test_init_ignorecomment():
 def test_commandtype(raw_data, command_type):
     commandline = CommandLine(0, raw_data)
     assert commandline.command_type == command_type
+
+
+def test_symbol_exception():
+    commandline = CommandLine(0, "")
+
+    with pytest.raises(CommandLineError):
+        commandline.symbol()
