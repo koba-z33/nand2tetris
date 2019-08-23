@@ -1,6 +1,6 @@
 import pytest
 
-from n2tassembler import CommandLine, CommandType
+from n2tassembler import CommandLine, CommandType, CommandLineError
 
 
 def test_init():
@@ -48,8 +48,27 @@ def test_commandtype(raw_data, command_type):
     assert commandline.command_type == command_type
 
 
-def test_symbol_exception():
-    commandline = CommandLine(0, "")
+@pytest.mark.parametrize('symbol_exception_raw_data',
+                         [
+                             (''),              # 空行
+                             ('// comment'),    # コメント行
+                             ('M=M + D'),       # 演算行
+                         ])
+def test_symbol_exception(symbol_exception_raw_data):
+    commandline = CommandLine(0, symbol_exception_raw_data)
 
     with pytest.raises(CommandLineError):
         commandline.symbol()
+
+
+@pytest.mark.parametrize('symbol_raw_data, symbol',
+                         [
+                             ('@XYZ', 'XYZ'),
+                             ('@1000', '1000'),
+                             ('(LABEL)', 'LABEL'),
+                         ]
+                         )
+def test_symbol(symbol_raw_data, symbol):
+    commandline = CommandLine(0, symbol_raw_data)
+
+    assert commandline.symbol == symbol

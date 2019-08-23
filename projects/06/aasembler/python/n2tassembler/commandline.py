@@ -1,4 +1,5 @@
 from .commandtype import CommandType
+from .commandlineerror import CommandLineError
 
 
 class CommandLine():
@@ -71,3 +72,24 @@ class CommandLine():
             return CommandType.L_COMMAND
         else:
             return CommandType.C_COMMAND
+
+    @property
+    def symbol(self) -> str:
+        """シンボル
+
+        Returns
+        -------
+        str
+            シンボル
+
+        Raises
+        ------
+        CommandLineError
+            A命令、ラベル以外のコマンドの時に発生
+        """
+        if self.command_type == CommandType.A_COMMAND:
+            return self.data[1:]
+        elif self.command_type == CommandType.L_COMMAND:
+            return self.data[1:-1]
+        else:
+            raise CommandLineError
