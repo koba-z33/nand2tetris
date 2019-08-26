@@ -177,7 +177,7 @@ def test_comp(raw_data_comp, comp):
                              ('(LABEL)'),           # ラベル
                          ]
                          )
-def test_comp_exception(raw_data_jump_exception):
+def test_jump_exception(raw_data_jump_exception):
     commandline = CommandLine(0, raw_data_jump_exception)
 
     with pytest.raises(CommandLineError):
