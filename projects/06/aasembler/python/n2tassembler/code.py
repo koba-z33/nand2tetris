@@ -109,3 +109,18 @@ class Code():
             バイナリコード
         """
         return self.__jump_dic[mnemonic]
+
+    def num2bin(self, num: int) -> str:
+        """数値バイナリ変換
+        
+        Parameters
+        ----------
+        num : int
+            数値
+        
+        Returns
+        -------
+        str
+            バイナリコード
+        """
+        return '{:016b}'.format(num)

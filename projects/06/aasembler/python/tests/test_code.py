@@ -82,3 +82,17 @@ def test_jump(mnemoni_jump, binary_jump):
     code = Code()
 
     assert code.jump(mnemoni_jump) == binary_jump
+
+
+@pytest.mark.parametrize('num2bin_data, binary_num',
+                         [
+                             (0, '0000000000000000'),
+                             (1, '0000000000000001'),
+                             (100, '0000000001100100'),
+                             (32767, '0111111111111111'),
+                             (21845, '0101010101010101'),
+                         ])
+def test_num2bin(num2bin_data, binary_num):
+    code = Code()
+
+    assert code.num2bin(num2bin_data) == binary_num
