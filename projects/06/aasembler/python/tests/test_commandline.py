@@ -90,7 +90,7 @@ def test_dest_exception(raw_data_dest_exception):
 
 @pytest.mark.parametrize('raw_data_dest, dest',
                          [
-                             ('0:JMP', 'null'),
+                             ('0;JMP', 'null'),
                              ('M=1', 'M'),
                              ('D=1', 'D'),
                              ('MD=1', 'MD'),

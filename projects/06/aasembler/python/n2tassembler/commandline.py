@@ -92,7 +92,7 @@ class CommandLine():
         elif self.command_type == CommandType.L_COMMAND:
             return self.data[1:-1]
         else:
-            raise CommandLineError
+            raise CommandLineError(str(self))
 
     @property
     def dest(self) -> str:
@@ -136,7 +136,7 @@ class CommandLine():
             分割されたニーモニック
         """
         if self.command_type != CommandType.C_COMMAND:
-            raise CommandLineError
+            raise CommandLineError(str(self))
 
         pos_e: int = self.data.find('=')
         pos_s: int = self.data.find(';')
@@ -157,3 +157,6 @@ class CommandLine():
             jump = self.data[pos_s + 1:]
 
         return (dest, comp, jump)
+
+    def __str__(self):
+        return 'LineNo {} : {}'.format(self.line_no, self.__raw_data)
