@@ -103,15 +103,7 @@ class CommandLine():
         str
             destニーモニック
         """
-        if self.command_type != CommandType.C_COMMAND:
-            raise CommandLineError
-
-        pos: int = self.data.find('=')
-
-        if pos == -1:
-            return 'null'
-        else:
-            return self.data[0:pos]
+        return self.__sepalate_mnemonic()[0]
 
     @property
     def comp(self) -> str:
@@ -122,16 +114,7 @@ class CommandLine():
         str
             compニーモニック
         """
-        if self.command_type != CommandType.C_COMMAND:
-            raise CommandLineError
-
-        pos_e: int = self.data.find('=')
-        pos_s: int = self.data.find(';')
-
-        if pos_s == -1:
-            return self.data[pos_e + 1:]
-        else:
-            return self.data[pos_e + 1:pos_s]
+        return self.__sepalate_mnemonic()[1]
 
     @property
     def jump(self) -> str:
@@ -142,12 +125,35 @@ class CommandLine():
         str
             jumpニーモニック
         """
+        return self.__sepalate_mnemonic()[2]
+
+    def __sepalate_mnemonic(self) -> tuple:
+        """ニーモニック分割
+
+        Returns
+        -------
+        tuple
+            分割されたニーモニック
+        """
         if self.command_type != CommandType.C_COMMAND:
             raise CommandLineError
 
-        pos = self.data.find(';')
+        pos_e: int = self.data.find('=')
+        pos_s: int = self.data.find(';')
 
-        if pos == -1:
-            return "null"
+        if pos_e == -1:
+            dest = 'null'
         else:
-            return self.data[pos + 1:]
+            dest = self.data[0:pos_e]
+
+        if pos_s == -1:
+            comp = self.data[pos_e + 1:]
+        else:
+            comp = self.data[pos_e + 1:pos_s]
+
+        if pos_s == -1:
+            jump = 'null'
+        else:
+            jump = self.data[pos_s + 1:]
+
+        return (dest, comp, jump)
