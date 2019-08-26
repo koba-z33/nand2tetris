@@ -8,6 +8,23 @@ class Assembler():
         self.__code = Code()
 
     def make_binary(self, commandline: CommandLine) -> str:
+        """コマンドから売那智コード変換
+        
+        Parameters
+        ----------
+        commandline : CommandLine
+            コマンドライン
+        
+        Returns
+        -------
+        str
+            バイナリコード
+        
+        Raises
+        ------
+        CommandLineError
+            ラベルコマンドを受け取ったときに発生
+        """
         if commandline.command_type == CommandType.C_COMMAND:
             head = "111"
             comp = self.__code.comp(commandline.comp)
