@@ -54,6 +54,16 @@ class Code():
             'D|A': '0010101',
             'D|M': '1010101',
         }
+        self.__jump_dic = {
+            'null': '000',
+            'JGT': '001',
+            'JEQ': '010',
+            'JGE': '011',
+            'JLT': '100',
+            'JNE': '101',
+            'JLE': '110',
+            'JMP': '111',
+        }
 
     def dest(self, mnemonic: str) -> str:
         """destバイナリ変換
@@ -84,3 +94,18 @@ class Code():
             バイナリコード
         """
         return self.__comp_dic[mnemonic]
+
+    def jump(self, mnemonic: str) -> str:
+        """jumpバイナリ変換
+
+        Parameters
+        ----------
+        mnemonic : str
+            ニーモニック
+
+        Returns
+        -------
+        str
+            バイナリコード
+        """
+        return self.__jump_dic[mnemonic]

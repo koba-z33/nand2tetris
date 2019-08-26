@@ -65,3 +65,20 @@ def test_comp(mnemonic_comp, binary_comp):
     code = Code()
 
     assert code.comp(mnemonic_comp) == binary_comp
+
+
+@pytest.mark.parametrize('mnemoni_jump, binary_jump',
+                         [
+                             ('null', '000'),
+                             ('JGT', '001'),
+                             ('JEQ', '010'),
+                             ('JGE', '011'),
+                             ('JLT', '100'),
+                             ('JNE', '101'),
+                             ('JLE', '110'),
+                             ('JMP', '111'),
+                         ])
+def test_jump(mnemoni_jump, binary_jump):
+    code = Code()
+
+    assert code.jump(mnemoni_jump) == binary_jump
