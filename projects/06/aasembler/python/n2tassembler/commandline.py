@@ -93,3 +93,22 @@ class CommandLine():
             return self.data[1:-1]
         else:
             raise CommandLineError
+
+    @property
+    def dest(self) -> str:
+        """destニーモニック
+
+        Returns
+        -------
+        str
+            destニーモニック
+        """
+        if self.command_type != CommandType.C_COMMAND:
+            raise CommandLineError
+
+        pos: int = self.data.find('=')
+
+        if pos == -1:
+            return 'null'
+        else:
+            return self.data[0:pos]

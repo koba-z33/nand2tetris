@@ -48,27 +48,57 @@ def test_commandtype(raw_data, command_type):
     assert commandline.command_type == command_type
 
 
-@pytest.mark.parametrize('symbol_exception_raw_data',
+@pytest.mark.parametrize('raw_data_symbol_exception',
                          [
                              (''),              # 空行
                              ('// comment'),    # コメント行
                              ('M=M + D'),       # 演算行
                          ])
-def test_symbol_exception(symbol_exception_raw_data):
-    commandline = CommandLine(0, symbol_exception_raw_data)
+def test_symbol_exception(raw_data_symbol_exception):
+    commandline = CommandLine(0, raw_data_symbol_exception)
 
     with pytest.raises(CommandLineError):
         commandline.symbol()
 
 
-@pytest.mark.parametrize('symbol_raw_data, symbol',
+@pytest.mark.parametrize('raw_data_symbol, symbol',
                          [
                              ('@XYZ', 'XYZ'),
                              ('@1000', '1000'),
                              ('(LABEL)', 'LABEL'),
                          ]
                          )
-def test_symbol(symbol_raw_data, symbol):
-    commandline = CommandLine(0, symbol_raw_data)
-
+def test_symbol(raw_data_symbol, symbol):
+    commandline = CommandLine(0, raw_data_symbol)
     assert commandline.symbol == symbol
+
+
+@pytest.mark.parametrize('raw_data_not_c_command',
+                         [
+                             (''),                  # 空行
+                             ('// comment'),        # コメント行
+                             ('@XYZ'),              # Aコマンド
+                             ('(LABEL)'),           # ラベル
+                         ]
+                         )
+def test_dest_exception(raw_data_not_c_command):
+    commandline = CommandLine(0, raw_data_not_c_command)
+
+    with pytest.raises(CommandLineError):
+        commandline.dest()
+
+
+@pytest.mark.parametrize('raw_data_dest, dest',
+                         [
+                             ('0:JMP', 'null'),
+                             ('M=1', 'M'),
+                             ('D=1', 'D'),
+                             ('MD=1', 'MD'),
+                             ('A=1', 'A'),
+                             ('AM=1', 'AM'),
+                             ('AD=1', 'AD'),
+                             ('AMD=1', 'AMD'),
+                         ])
+def test_dest(raw_data_dest, dest):
+    commandline = CommandLine(0, raw_data_dest)
+    assert commandline.dest == dest
