@@ -132,3 +132,22 @@ class CommandLine():
             return self.data[pos_e + 1:]
         else:
             return self.data[pos_e + 1:pos_s]
+
+    @property
+    def jump(self) -> str:
+        """jumpニーモニック
+
+        Returns
+        -------
+        str
+            jumpニーモニック
+        """
+        if self.command_type != CommandType.C_COMMAND:
+            raise CommandLineError
+
+        pos = self.data.find(';')
+
+        if pos == -1:
+            return "null"
+        else:
+            return self.data[pos + 1:]

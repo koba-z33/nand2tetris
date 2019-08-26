@@ -160,7 +160,6 @@ def test_comp_exception(raw_data_comp_exception):
                              ('A=D|A', 'D|A'),
                              ('D=D|M', 'D|M'),
 
-
                              ('0;JMP', '0'),
                              ('A;JGT', 'A'),
                              ('D;JGT', 'D'),
@@ -168,3 +167,34 @@ def test_comp_exception(raw_data_comp_exception):
 def test_comp(raw_data_comp, comp):
     commandline = CommandLine(0, raw_data_comp)
     assert commandline.comp == comp
+
+
+@pytest.mark.parametrize('raw_data_jump_exception',
+                         [
+                             (''),                  # 空行
+                             ('// comment'),        # コメント行
+                             ('@XYZ'),              # Aコマンド
+                             ('(LABEL)'),           # ラベル
+                         ]
+                         )
+def test_comp_exception(raw_data_jump_exception):
+    commandline = CommandLine(0, raw_data_jump_exception)
+
+    with pytest.raises(CommandLineError):
+        commandline.jump()
+
+
+@pytest.mark.parametrize('raw_data_jump, jump',
+                         [
+                             ('A=0', 'null'),
+                             ('D;JGT', 'JGT'),
+                             ('D;JEQ', 'JEQ'),
+                             ('D;JGE', 'JGE'),
+                             ('D;JLT', 'JLT'),
+                             ('D;JNE', 'JNE'),
+                             ('D;JLE', 'JLE'),
+                             ('D;JMP', 'JMP'),
+                         ])
+def test_jump(raw_data_jump, jump):
+    commandline = CommandLine(0, raw_data_jump)
+    assert commandline.jump == jump
