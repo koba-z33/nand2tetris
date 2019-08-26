@@ -112,3 +112,23 @@ class CommandLine():
             return 'null'
         else:
             return self.data[0:pos]
+
+    @property
+    def comp(self) -> str:
+        """compニーモニック
+
+        Returns
+        -------
+        str
+            compニーモニック
+        """
+        if self.command_type != CommandType.C_COMMAND:
+            raise CommandLineError
+
+        pos_e: int = self.data.find('=')
+        pos_s: int = self.data.find(';')
+
+        if pos_s == -1:
+            return self.data[pos_e + 1:]
+        else:
+            return self.data[pos_e + 1:pos_s]

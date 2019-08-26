@@ -73,7 +73,7 @@ def test_symbol(raw_data_symbol, symbol):
     assert commandline.symbol == symbol
 
 
-@pytest.mark.parametrize('raw_data_not_c_command',
+@pytest.mark.parametrize('raw_data_dest_exception',
                          [
                              (''),                  # 空行
                              ('// comment'),        # コメント行
@@ -81,8 +81,8 @@ def test_symbol(raw_data_symbol, symbol):
                              ('(LABEL)'),           # ラベル
                          ]
                          )
-def test_dest_exception(raw_data_not_c_command):
-    commandline = CommandLine(0, raw_data_not_c_command)
+def test_dest_exception(raw_data_dest_exception):
+    commandline = CommandLine(0, raw_data_dest_exception)
 
     with pytest.raises(CommandLineError):
         commandline.dest()
@@ -102,3 +102,69 @@ def test_dest_exception(raw_data_not_c_command):
 def test_dest(raw_data_dest, dest):
     commandline = CommandLine(0, raw_data_dest)
     assert commandline.dest == dest
+
+
+@pytest.mark.parametrize('raw_data_comp_exception',
+                         [
+                             (''),                  # 空行
+                             ('// comment'),        # コメント行
+                             ('@XYZ'),              # Aコマンド
+                             ('(LABEL)'),           # ラベル
+                         ]
+                         )
+def test_comp_exception(raw_data_comp_exception):
+    commandline = CommandLine(0, raw_data_comp_exception)
+
+    with pytest.raises(CommandLineError):
+        commandline.comp()
+
+
+@pytest.mark.parametrize('raw_data_comp, comp',
+                         [
+                             ('A=0', '0'),
+                             ('A=1', '1'),
+                             ('A=-1', '-1'),
+
+                             ('A=D', 'D'),
+                             ('D=A', 'A'),
+                             ('D=M', 'M'),
+
+                             ('A=!D', '!D'),
+                             ('A=!A', '!A'),
+                             ('D=!M', '!M'),
+
+                             ('A=-D', '-D'),
+                             ('A=-A', '-A'),
+                             ('D=-M', '-M'),
+
+                             ('A=D+1', 'D+1'),
+                             ('A=A+1', 'A+1'),
+                             ('D=M+1', 'M+1'),
+
+                             ('A=D-1', 'D-1'),
+                             ('A=A-1', 'A-1'),
+                             ('D=M-1', 'M-1'),
+
+                             ('A=D+A', 'D+A'),
+                             ('D=D+M', 'D+M'),
+
+                             ('A=D-A', 'D-A'),
+                             ('D=D-M', 'D-M'),
+
+                             ('A=A-D', 'A-D'),
+                             ('D=M-D', 'M-D'),
+
+                             ('A=D&A', 'D&A'),
+                             ('D=D&M', 'D&M'),
+
+                             ('A=D|A', 'D|A'),
+                             ('D=D|M', 'D|M'),
+
+
+                             ('0;JMP', '0'),
+                             ('A;JGT', 'A'),
+                             ('D;JGT', 'D'),
+                         ])
+def test_comp(raw_data_comp, comp):
+    commandline = CommandLine(0, raw_data_comp)
+    assert commandline.comp == comp
