@@ -10,7 +10,7 @@ class Assembler():
         self.__code = Code()
 
     def make_binary(self, commandline: CommandLine) -> str:
-        """コマンドから売那智コード変換
+        """コマンドからバイナリコード変換
 
         Parameters
         ----------
