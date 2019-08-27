@@ -1,3 +1,5 @@
+import os
+
 from . import CommandLine, CommandType, CommandLineError, Code
 
 
@@ -9,17 +11,17 @@ class Assembler():
 
     def make_binary(self, commandline: CommandLine) -> str:
         """コマンドから売那智コード変換
-        
+
         Parameters
         ----------
         commandline : CommandLine
             コマンドライン
-        
+
         Returns
         -------
         str
             バイナリコード
-        
+
         Raises
         ------
         CommandLineError
@@ -35,3 +37,18 @@ class Assembler():
             return self.__code.num2bin(int(commandline.symbol))
         else:
             raise CommandLineError(str(commandline))
+
+    def hack_filename(self, asm_filename: str) -> str:
+        """hackファイル名作成
+        
+        Parameters
+        ----------
+        asm_filename : str
+            asmファイル名
+        
+        Returns
+        -------
+        str
+            hackファイル名
+        """
+        return os.path.splitext(asm_filename)[0] + '.hack'
