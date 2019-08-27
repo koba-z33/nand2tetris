@@ -1,6 +1,7 @@
 import os
+import sys
 
-from . import CommandLine, CommandType, CommandLineError, Code
+from . import CommandLine, CommandType, CommandLineError, Code, Parser
 
 
 class Assembler():
@@ -40,15 +41,24 @@ class Assembler():
 
     def hack_filename(self, asm_filename: str) -> str:
         """hackファイル名作成
-        
+
         Parameters
         ----------
         asm_filename : str
             asmファイル名
-        
+
         Returns
         -------
         str
             hackファイル名
         """
         return os.path.splitext(asm_filename)[0] + '.hack'
+
+
+def main():
+    assembler: Assembler = Assembler()
+
+    asm_filename: str = sys.argv[1]
+    hack_filename: str = assembler.hack_filename(asm_filename)
+
+    print('Assemble {} -> {}'.format(asm_filename, hack_filename))
