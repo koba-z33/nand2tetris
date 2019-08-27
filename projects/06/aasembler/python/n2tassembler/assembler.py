@@ -54,11 +54,41 @@ class Assembler():
         """
         return os.path.splitext(asm_filename)[0] + '.hack'
 
+    def assemble(self, asm_lines: list) -> list:
+        """アセンブル
+
+        Parameters
+        ----------
+        lines : list
+            アセンブラコードリスト
+
+        Returns
+        -------
+        list
+            バイナリコードリスト
+        """
+        parser: Parser = Parser(asm_lines)
+
+        binaries: list = []
+        while parser.has_more_commands:
+            parser.advance()
+            command: CommandLine = parser.command
+            binaries.append(self.make_binary(command))
+
+        return binaries
+
 
 def main():
     assembler: Assembler = Assembler()
 
     asm_filename: str = sys.argv[1]
     hack_filename: str = assembler.hack_filename(asm_filename)
-
     print('Assemble {} -> {}'.format(asm_filename, hack_filename))
+
+    with open(asm_filename, 'r') as f:
+        asm_lines = f.readlines()
+
+    binaries: list = assembler.assemble(asm_lines)
+
+    with open(hack_filename, 'w') as f:
+        f.writelines('\n'.join(binaries))

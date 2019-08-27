@@ -30,3 +30,61 @@ def test_hack_filename(asm_filename, hack_filename):
     assembler = Assembler()
 
     assert assembler.hack_filename(asm_filename) == hack_filename
+
+
+def test_assemble_no_label():
+    asm_lines = [
+        '// This file is part of www.nand2tetris.org',
+        '// and the book "The Elements of Computing Systems"',
+        '// by Nisan and Schocken, MIT Press.',
+        '// File name: projects/06/max/MaxL.asm',
+        '',
+        '// Symbol-less version of the Max.asm program.',
+        '',
+        '@0',
+        'D=M',
+        '@1',
+        'D=D-M',
+        '@10',
+        'D;JGT',
+        '@1',
+        'D=M',
+        '@12',
+        '0;JMP',
+        '@0',
+        'D=M',
+        '@2',
+        'M=D',
+        '@14',
+        '0;JMP'
+    ]
+
+    hack_binaries = [
+        '0000000000000000',
+        '1111110000010000',
+        '0000000000000001',
+        '1111010011010000',
+        '0000000000001010',
+        '1110001100000001',
+        '0000000000000001',
+        '1111110000010000',
+        '0000000000001100',
+        '1110101010000111',
+        '0000000000000000',
+        '1111110000010000',
+        '0000000000000010',
+        '1110001100001000',
+        '0000000000001110',
+        '1110101010000111',
+    ]
+
+    assembler: Assembler = Assembler()
+
+    binaries = assembler.assemble(asm_lines)
+
+    assert len(binaries) == len(hack_binaries)
+
+    for i in range(len(binaries)):
+        assert binaries[i] == hack_binaries[i]
+
+
