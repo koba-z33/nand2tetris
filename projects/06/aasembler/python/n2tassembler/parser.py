@@ -17,7 +17,7 @@ class Parser():
             commandline = CommandLine(lineno, line)
             if commandline.command_type != CommandType.BLANK_LINE:
                 self.__lines.append(commandline)
-        self.__memory_pos = -1
+        self.reset()
 
     @property
     def has_more_commands(self) -> bool:
@@ -44,3 +44,8 @@ class Parser():
             コマンド
         """
         return self.__lines[self.__memory_pos]
+
+    def reset(self):
+        """カウンタリセット
+        """
+        self.__memory_pos = -1
