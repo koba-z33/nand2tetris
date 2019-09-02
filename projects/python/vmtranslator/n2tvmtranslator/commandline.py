@@ -71,3 +71,10 @@ class CommandLine():
             return self.__data.split()[1]
         elif self.command_type == CommandType.C_PUSH:
             return self.__data.split()[1]
+
+    @property
+    def arg2(self) -> int:
+        if self.command_type == CommandType.C_POP:
+            return int(self.__data.split()[2])
+        elif self.command_type == CommandType.C_PUSH:
+            return int(self.__data.split()[2])
