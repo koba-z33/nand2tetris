@@ -89,7 +89,7 @@ M=D
         assert binaries[i] == hack_binaries[i]
 
 
-def test_assemble_label():
+def test_assemble_max():
     asm = """
 // This file is part of www.nand2tetris.org
 // and the book "The Elements of Computing Systems"
@@ -149,7 +149,7 @@ def test_assemble_label():
         assert binaries[i] == hack_binaries[i]
 
 
-def test_assemble_label():
+def test_assemble_rect():
 
     asm = """
 // This file is part of www.nand2tetris.org
