@@ -48,3 +48,20 @@ def test_commandtype(raw_data_command_type, command_type):
     assert commandline.command_type == command_type
 
 
+@pytest.mark.parametrize('raw_data_arg1, arg1',
+                         [
+                             ('push constant 0', 'constant'),
+                             ('pop   local 0', 'local'),
+                             ('add', 'add'),
+                             ('sub', 'sub'),
+                             ('neg', 'neg'),
+                             ('eq', 'eq'),
+                             ('gt', 'gt'),
+                             ('lt', 'lt'),
+                             ('and', 'and'),
+                             ('or', 'or'),
+                             ('not', 'not'),
+                         ])
+def test_arg1(raw_data_arg1, arg1):
+    commandline = CommandLine(0, raw_data_arg1)
+    assert commandline.arg1 == arg1

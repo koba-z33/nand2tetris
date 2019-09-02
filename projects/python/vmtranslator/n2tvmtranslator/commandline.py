@@ -63,4 +63,11 @@ class CommandLine():
         else:
             return CommandType.C_ARITHMETIC
 
-    
+    @property
+    def arg1(self) -> str:
+        if self.command_type == CommandType.C_ARITHMETIC:
+            return self.__data
+        elif self.command_type == CommandType.C_POP:
+            return self.__data.split()[1]
+        elif self.command_type == CommandType.C_PUSH:
+            return self.__data.split()[1]
