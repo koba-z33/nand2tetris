@@ -1,3 +1,5 @@
+from .commandtype import CommandType
+
 
 class CommandLine():
     """ VMトランスレータコマンドラインオブジェクト
@@ -49,3 +51,16 @@ class CommandLine():
             行データ
         """
         return self.__data
+
+    @property
+    def command_type(self) -> CommandType:
+        if len(self.__data) == 0:
+            return CommandType.BLANK_LINE
+        elif self.__data.startswith('push'):
+            return CommandType.C_PUSH
+        elif self.__data.startswith('pop'):
+            return CommandType.C_POP
+        else:
+            return CommandType.C_ARITHMETIC
+
+    
