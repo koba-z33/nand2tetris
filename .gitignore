@@ -12,3 +12,5 @@ venv
 
 .vscode
 
+tools/bin/CPU Emulator.dat
+tools/bin/Virtual Machine Emulator.dat
