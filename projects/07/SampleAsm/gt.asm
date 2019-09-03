@@ -5,7 +5,6 @@ D=A
 M=D
 
 // gt 10 10 = false(0)
-    // push constant 10
     @10
     D=A
     @SP
@@ -14,7 +13,6 @@ M=D
     @SP
     M=M+1
 
-    // push constant 10
     @10
     D=A
     @SP
@@ -23,25 +21,24 @@ M=D
     @SP
     M=M+1
 
-        // eq
+        // comp
         @SP
         AM=M-1
-        D=M         // pop
+        D=M
         @SP
         AM=M-1
-        D=M-D       // pop
+        D=M-D
         M=-1
-        @GT.1
+        @COMP.1
         D;JGT
         @SP
         A=M
         M=0
-        (GT.1)
+        (COMP.1)
         @SP
         M=M+1
 
 // gt 10 11 = false(0)
-    // push constant 10
     @10
     D=A
     @SP
@@ -50,7 +47,6 @@ M=D
     @SP
     M=M+1
 
-    // push constant 11
     @11
     D=A
     @SP
@@ -59,26 +55,24 @@ M=D
     @SP
     M=M+1
 
-        // gt
+        // comp
         @SP
         AM=M-1
-        D=M         // pop
+        D=M
         @SP
         AM=M-1
-        D=M-D       // pop
+        D=M-D
         M=-1
-        @GT.2
+        @COMP.2
         D;JGT
         @SP
         A=M
         M=0 
-        (GT.2)
+        (COMP.2)
         @SP
         M=M+1
 
-
-// gt 11 10 = treu(-1)
-    // push constant 11
+// gt 11 10 = true(-1)
     @11
     D=A
     @SP
@@ -87,7 +81,6 @@ M=D
     @SP
     M=M+1
 
-    // push constant 10
     @10
     D=A
     @SP
@@ -96,20 +89,20 @@ M=D
     @SP
     M=M+1
 
-        // gt
+        // comp
         @SP
         AM=M-1
-        D=M         // pop
+        D=M
         @SP
         AM=M-1
-        D=M-D       // pop
+        D=M-D
         M=-1
-        @GT.3
+        @COMP.3
         D;JGT
         @SP
         A=M
-        M=0 
-        (GT.3)
+        M=0
+        (COMP.3)
         @SP
         M=M+1
 

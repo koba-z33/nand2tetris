@@ -23,15 +23,12 @@ M=D
     @SP
     M=M+1
 
-    // add
-        // pop
+        // add
         @SP
         A=M-1
         D=M
-        // pop
         A=A-1
-        M=D+M
-        // push
+        M=M+D
         D=A
         @SP
         M=D+1
@@ -58,10 +55,10 @@ M=D
         // sub
         @SP
         A=M-1
-        D=M         // pop
+        D=M
         A=A-1
-        M=M-D       // pop
-        D=A         // push
+        M=M-D
+        D=A
         @SP
         M=D+1
 
@@ -105,17 +102,17 @@ M=D
         // eq
         @SP
         AM=M-1
-        D=M         // pop
+        D=M
         @SP
         AM=M-1
-        D=M-D       // pop
+        D=M-D
         M=-1
-        @EQ.1
+        @COMP.1
         D;JEQ
         @SP
         A=M
         M=0
-        (EQ.1)
+        (COMP.1)
         @SP
         M=M+1
 
@@ -141,17 +138,17 @@ M=D
         // eq
         @SP
         AM=M-1
-        D=M         // pop
+        D=M
         @SP
         AM=M-1
-        D=M-D       // pop
+        D=M-D
         M=-1
-        @EQ.2
+        @COMP.2
         D;JEQ
         @SP
         A=M
         M=0 
-        (EQ.2)
+        (COMP.2)
         @SP
         M=M+1
 
@@ -177,17 +174,17 @@ M=D
         // eq
         @SP
         AM=M-1
-        D=M         // pop
+        D=M
         @SP
         AM=M-1
-        D=M-D       // pop
+        D=M-D
         M=-1
-        @EQ.1
+        @COMP.3
         D;JEQ
         @SP
         A=M
         M=0
-        (EQ.1)
+        (COMP.3)
         @SP
         M=M+1
 
@@ -213,17 +210,17 @@ M=D
         // eq
         @SP
         AM=M-1
-        D=M         // pop
+        D=M
         @SP
         AM=M-1
-        D=M-D       // pop
+        D=M-D
         M=-1
-        @GT.1
+        @COMP.4
         D;JGT
         @SP
         A=M
         M=0
-        (GT.1)
+        (COMP.4)
         @SP
         M=M+1
 
@@ -249,17 +246,17 @@ M=D
         // gt
         @SP
         AM=M-1
-        D=M         // pop
+        D=M
         @SP
         AM=M-1
-        D=M-D       // pop
+        D=M-D
         M=-1
-        @GT.2
+        @COMP.5
         D;JGT
         @SP
         A=M
         M=0 
-        (GT.2)
+        (COMP.5)
         @SP
         M=M+1
 
@@ -286,17 +283,17 @@ M=D
         // gt
         @SP
         AM=M-1
-        D=M         // pop
+        D=M
         @SP
         AM=M-1
-        D=M-D       // pop
+        D=M-D
         M=-1
-        @GT.3
+        @COMP.6
         D;JGT
         @SP
         A=M
         M=0 
-        (GT.3)
+        (COMP.6)
         @SP
         M=M+1
     
@@ -322,17 +319,17 @@ M=D
         // lt
         @SP
         AM=M-1
-        D=M         // pop
+        D=M
         @SP
         AM=M-1
-        D=M-D       // pop
+        D=M-D
         M=-1
-        @LT.1
+        @COMP.7
         D;JLT
         @SP
         A=M
         M=0
-        (LT.1)
+        (COMP.7)
         @SP
         M=M+1
 
@@ -358,17 +355,17 @@ M=D
         // lt
         @SP
         AM=M-1
-        D=M         // pop
+        D=M
         @SP
         AM=M-1
-        D=M-D       // pop
+        D=M-D
         M=-1
-        @LT.2
+        @COMP.8
         D;JLT
         @SP
         A=M
         M=0 
-        (LT.2)
+        (COMP.8)
         @SP
         M=M+1
 
@@ -395,19 +392,97 @@ M=D
         // lt
         @SP
         AM=M-1
-        D=M         // pop
+        D=M
         @SP
         AM=M-1
-        D=M-D       // pop
+        D=M-D
         M=-1
-        @LT.3
+        @COMP.9
         D;JLT
         @SP
         A=M
         M=0 
-        (LT.3)
+        (COMP.9)
         @SP
         M=M+1
+
+// and 127 170 = 42
+    // push constant 127
+    @127
+    D=A
+    @SP
+    A=M
+    M=D
+    @SP
+    M=M+1
+
+    // push constant 170
+    @170
+    D=A
+    @SP
+    A=M
+    M=D
+    @SP
+    M=M+1
+
+        // sub
+        @SP
+        A=M-1
+        D=M
+        A=A-1
+        M=M&D
+        D=A
+        @SP
+        M=D+1
+
+// or 5 16 = 21
+    // push constant 5
+    @5
+    D=A
+    @SP
+    A=M
+    M=D
+    @SP
+    M=M+1
+
+    // push constant 16
+    @16
+    D=A
+    @SP
+    A=M
+    M=D
+    @SP
+    M=M+1
+
+        // sub
+        @SP
+        A=M-1
+        D=M
+        A=A-1
+        M=M|D
+        D=A
+        @SP
+        M=D+1
+
+// not 21845 = -21846
+    // push constant 0
+    @21845
+    D=A
+    @SP
+    A=M
+    M=D
+    @SP
+    M=M+1
+
+        // not
+        @SP
+        A=M-1
+        M=!M
+        D=A
+        @SP
+        M=D+1
+
+
 
 // END mark
 @9999

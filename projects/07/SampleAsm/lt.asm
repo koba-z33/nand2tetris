@@ -5,7 +5,6 @@ D=A
 M=D
 
 // lt 10 10 = false(0)
-    // push constant 10
     @10
     D=A
     @SP
@@ -14,7 +13,6 @@ M=D
     @SP
     M=M+1
 
-    // push constant 10
     @10
     D=A
     @SP
@@ -23,25 +21,24 @@ M=D
     @SP
     M=M+1
 
-        // lt
+        // comp
         @SP
         AM=M-1
-        D=M         // pop
+        D=M
         @SP
         AM=M-1
-        D=M-D       // pop
-        M=-1        // set true
-        @LT.1
+        D=M-D
+        M=-1
+        @COMP.1
         D;JLT
         @SP
         A=M
         M=0
-        (LT.1)
+        (COMP.1)
         @SP
         M=M+1
 
 // lt 11 10 = false(0)
-    // push constant 11
     @11
     D=A
     @SP
@@ -50,7 +47,6 @@ M=D
     @SP
     M=M+1
 
-    // push constant 10
     @10
     D=A
     @SP
@@ -59,26 +55,25 @@ M=D
     @SP
     M=M+1
 
-        // lt
+        // comp
         @SP
         AM=M-1
-        D=M         // pop
+        D=M
         @SP
         AM=M-1
-        D=M-D       // pop
-        M=-1        // set true
-        @LT.2
+        D=M-D
+        M=-1
+        @COMP.2
         D;JLT
         @SP
         A=M
         M=0 
-        (LT.2)
+        (COMP.2)
         @SP
         M=M+1
 
 
-// lt 10 11 = treu(-1)
-    // push constant 10
+// lt 10 11 = true(-1)
     @10
     D=A
     @SP
@@ -87,7 +82,6 @@ M=D
     @SP
     M=M+1
 
-    // push constant 11
     @11
     D=A
     @SP
@@ -96,20 +90,20 @@ M=D
     @SP
     M=M+1
 
-        // lt
+        // comp
         @SP
         AM=M-1
-        D=M         // pop
+        D=M
         @SP
         AM=M-1
-        D=M-D       // pop
-        M=-1        // set true
-        @LT.3
+        D=M-D
+        M=-1
+        @COMP.3
         D;JLT
         @SP
         A=M
-        M=0         // set false 
-        (LT.3)
+        M=0
+        (COMP.3)
         @SP
         M=M+1
 
