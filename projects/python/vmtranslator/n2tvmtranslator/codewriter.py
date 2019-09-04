@@ -19,11 +19,11 @@ class CodeWriter():
 
     def makePushPopCode(self, command: CommandLine) -> str:
         if command.command_type == CommandType.C_PUSH:
-            return self.makePushCode(command)
+            return self.__makePushCode(command)
         else:
-            return self.makePopCode(command)
+            return self.__makePopCode(command)
 
-    def makePushCode(self, command: CommandLine) -> str:
+    def __makePushCode(self, command: CommandLine) -> str:
         seg: str = command.arg1
         index: int = command.arg2
         if seg in self.__seg_start:
@@ -68,7 +68,7 @@ class CodeWriter():
                 M=M+1
                 """)
 
-    def makePopCode(self, command: CommandLine) -> str:
+    def __makePopCode(self, command: CommandLine) -> str:
         seg: str = command.arg1
         index: int = command.arg2
         if seg in self.__seg_start:
