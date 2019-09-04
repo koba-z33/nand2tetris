@@ -6,15 +6,13 @@ class CodeWriter():
     """ コードライター """
 
     __seg_start = {
-        'argument': 'ARG',
-        'local': 'LCL',
-        'static': '16',
-        'this': 'THIS',
-        'that': 'THAT',
-    }
-    __fix_seg_start = {
-        'pointer': 'THIS',
-        'temp': 'R5',
+        'argument': ('ARG', 'M'),
+        'local': ('LCL', 'M'),
+        'static': ('16', 'M'),
+        'this': ('THIS', 'M'),
+        'that': ('THAT', 'M'),
+        'pointer': ('THIS', 'A'),
+        'temp': ('R5', 'A'),
     }
     __operator_2_variable = {
         'add': 'M+D',
@@ -46,30 +44,11 @@ class CodeWriter():
     def __makePushCode(self, command: CommandLine) -> str:
         seg: str = command.arg1
         index: int = command.arg2
-        if seg in self.__seg_start:
-            seg_start = self.__seg_start[seg]
+        if seg == 'constant':
             return textwrap.dedent(f"""
                 // push {seg} {index}
                 @{index}
                 D=A
-                @{seg_start}
-                A=M+D
-                D=M
-                @SP
-                A=M
-                M=D
-                @SP
-                M=M+1
-                """)
-        elif seg in self.__fix_seg_start:
-            seg_start = self.__fix_seg_start[seg]
-            return textwrap.dedent(f"""
-                // push {seg} {index}
-                @{index}
-                D=A
-                @{seg_start}
-                A=A+D
-                D=M
                 @SP
                 A=M
                 M=D
@@ -77,10 +56,14 @@ class CodeWriter():
                 M=M+1
                 """)
         else:
+            seg_start = self.__seg_start[seg]
             return textwrap.dedent(f"""
                 // push {seg} {index}
                 @{index}
                 D=A
+                @{seg_start[0]}
+                A={seg_start[1]}+D
+                D=M
                 @SP
                 A=M
                 M=D
@@ -91,40 +74,22 @@ class CodeWriter():
     def __makePopCode(self, command: CommandLine) -> str:
         seg: str = command.arg1
         index: int = command.arg2
-        if seg in self.__seg_start:
-            seg_start = self.__seg_start[seg]
-            return textwrap.dedent(f"""
-                // pop {seg} {index}
-                @{index}
-                D=A
-                @{seg_start}
-                D=M+D
-                @R15
-                M=D
-                @SP
-                AM=M-1
-                D=M
-                @R15
-                A=M
-                M=D
-                """)
-        else:
-            seg_start = self.__fix_seg_start[seg]
-            return textwrap.dedent(f"""
-                // pop {seg} {index}
-                @{index}
-                D=A
-                @{seg_start}
-                D=A+D
-                @R15
-                M=D
-                @SP
-                AM=M-1
-                D=M
-                @R15
-                A=M
-                M=D
-                """)
+        seg_start = self.__seg_start[seg]
+        return textwrap.dedent(f"""
+            // pop {seg} {index}
+            @{index}
+            D=A
+            @{seg_start[0]}
+            D={seg_start[1]}+D
+            @R15
+            M=D
+            @SP
+            AM=M-1
+            D=M
+            @R15
+            A=M
+            M=D
+            """)
 
     def __makeArithmetic(self, command: CommandLine) -> str:
         operator_name: str = command.arg1
