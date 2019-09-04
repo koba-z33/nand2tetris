@@ -35,11 +35,13 @@ class CodeWriter():
     def __init__(self):
         self.__comp_index = 0
 
-    def makePushPopCode(self, command: CommandLine) -> str:
-        if command.command_type == CommandType.C_PUSH:
-            return self.__makePushCode(command)
-        else:
+    def makeAssembleCode(self, command: CommandLine) -> str:
+        if command.command_type == CommandType.C_POP:
             return self.__makePopCode(command)
+        elif command.command_type == CommandType.C_PUSH:
+            return self.__makePushCode(command)
+        elif command.command_type == CommandType.C_ARITHMETIC:
+            return self.__makeArithmetic(command)
 
     def __makePushCode(self, command: CommandLine) -> str:
         seg: str = command.arg1
@@ -124,7 +126,7 @@ class CodeWriter():
                 M=D
                 """)
 
-    def makeArithmetic(self, command: CommandLine) -> str:
+    def __makeArithmetic(self, command: CommandLine) -> str:
         operator_name: str = command.arg1
 
         if operator_name in self.__operator_2_variable:

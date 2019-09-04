@@ -1,4 +1,4 @@
-from n2tvmtranslator import CodeWriter, Parser, CommandLine, CommandType
+from n2tvmtranslator import CodeWriter, Parser, CommandLine
 import sys
 import os
 
@@ -15,12 +15,7 @@ class VMtranslator():
         while parser.has_more_commands:
             parser.advance()
             command: CommandLine = parser.command
-            if command.command_type == CommandType.C_POP:
-                asm = asm + self.__codewriter.makePushPopCode(command)
-            elif command.command_type == CommandType.C_PUSH:
-                asm = asm + self.__codewriter.makePushPopCode(command)
-            elif command.command_type == CommandType.C_ARITHMETIC:
-                asm = asm + self.__codewriter.makeArithmetic(command)
+            asm = asm + self.__codewriter.makeAssembleCode(command)
 
         return asm
 

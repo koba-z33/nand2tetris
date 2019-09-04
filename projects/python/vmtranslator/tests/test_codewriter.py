@@ -18,7 +18,7 @@ M=D
 M=M+1
 """
 
-    assert codewriter.makePushPopCode(command) == expected
+    assert codewriter.makeAssembleCode(command) == expected
 
 
 def test_pop_argument():
@@ -40,7 +40,7 @@ A=M
 M=D
 """
 
-    assert codewriter.makePushPopCode(command) == expected
+    assert codewriter.makeAssembleCode(command) == expected
 
 
 def test_push_local():
@@ -60,7 +60,7 @@ M=D
 M=M+1
 """
 
-    assert codewriter.makePushPopCode(command) == expected
+    assert codewriter.makeAssembleCode(command) == expected
 
 
 def test_pop_local():
@@ -82,7 +82,7 @@ A=M
 M=D
 """
 
-    assert codewriter.makePushPopCode(command) == expected
+    assert codewriter.makeAssembleCode(command) == expected
 
 
 def test_push_static():
@@ -102,7 +102,7 @@ M=D
 M=M+1
 """
 
-    assert codewriter.makePushPopCode(command) == expected
+    assert codewriter.makeAssembleCode(command) == expected
 
 
 def test_pop_static():
@@ -124,7 +124,7 @@ A=M
 M=D
 """
 
-    assert codewriter.makePushPopCode(command) == expected
+    assert codewriter.makeAssembleCode(command) == expected
 
 
 def test_push_constant():
@@ -141,7 +141,7 @@ M=D
 M=M+1
 """
 
-    assert codewriter.makePushPopCode(command) == expected
+    assert codewriter.makeAssembleCode(command) == expected
 
 
 def test_push_this():
@@ -161,7 +161,7 @@ M=D
 M=M+1
 """
 
-    assert codewriter.makePushPopCode(command) == expected
+    assert codewriter.makeAssembleCode(command) == expected
 
 
 def test_pop_this():
@@ -183,7 +183,7 @@ A=M
 M=D
 """
 
-    assert codewriter.makePushPopCode(command) == expected
+    assert codewriter.makeAssembleCode(command) == expected
 
 
 def test_push_that():
@@ -203,7 +203,7 @@ M=D
 M=M+1
 """
 
-    assert codewriter.makePushPopCode(command) == expected
+    assert codewriter.makeAssembleCode(command) == expected
 
 
 def test_pop_that():
@@ -225,7 +225,7 @@ A=M
 M=D
 """
 
-    assert codewriter.makePushPopCode(command) == expected
+    assert codewriter.makeAssembleCode(command) == expected
 
 
 def test_push_pointer():
@@ -245,7 +245,7 @@ M=D
 M=M+1
 """
 
-    assert codewriter.makePushPopCode(command) == expected
+    assert codewriter.makeAssembleCode(command) == expected
 
 
 def test_pop_pointer():
@@ -267,7 +267,7 @@ A=M
 M=D
 """
 
-    assert codewriter.makePushPopCode(command) == expected
+    assert codewriter.makeAssembleCode(command) == expected
 
 
 def test_push_temp():
@@ -287,7 +287,7 @@ M=D
 M=M+1
 """
 
-    assert codewriter.makePushPopCode(command) == expected
+    assert codewriter.makeAssembleCode(command) == expected
 
 
 def test_pop_temp():
@@ -309,7 +309,7 @@ A=M
 M=D
 """
 
-    assert codewriter.makePushPopCode(command) == expected
+    assert codewriter.makeAssembleCode(command) == expected
 
 
 def test_add():
@@ -327,7 +327,7 @@ D=A
 M=D+1
 """
 
-    assert codewriter.makeArithmetic(command) == expected
+    assert codewriter.makeAssembleCode(command) == expected
 
 
 def test_sub():
@@ -345,7 +345,7 @@ D=A
 M=D+1
 """
 
-    assert codewriter.makeArithmetic(command) == expected
+    assert codewriter.makeAssembleCode(command) == expected
 
 
 def test_neg():
@@ -360,7 +360,7 @@ M=-M
 M=D+1
 """
 
-    assert codewriter.makeArithmetic(command) == expected
+    assert codewriter.makeAssembleCode(command) == expected
 
 
 def test_eq_gt_lt():
@@ -429,9 +429,9 @@ M=0
 M=M+1
 """
 
-    assert codewriter.makeArithmetic(command_eq) == expected_eq
-    assert codewriter.makeArithmetic(command_gt) == expected_gt
-    assert codewriter.makeArithmetic(command_lt) == expected_lt
+    assert codewriter.makeAssembleCode(command_eq) == expected_eq
+    assert codewriter.makeAssembleCode(command_gt) == expected_gt
+    assert codewriter.makeAssembleCode(command_lt) == expected_lt
 
 
 def test_and():
@@ -449,7 +449,7 @@ D=A
 M=D+1
 """
 
-    assert codewriter.makeArithmetic(command) == expected
+    assert codewriter.makeAssembleCode(command) == expected
 
 
 def test_or():
@@ -467,7 +467,7 @@ D=A
 M=D+1
 """
 
-    assert codewriter.makeArithmetic(command) == expected
+    assert codewriter.makeAssembleCode(command) == expected
 
 
 def test_not():
@@ -482,4 +482,4 @@ M=!M
 M=D+1
 """
 
-    assert codewriter.makeArithmetic(command) == expected
+    assert codewriter.makeAssembleCode(command) == expected
