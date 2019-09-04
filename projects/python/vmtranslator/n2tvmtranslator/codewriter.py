@@ -16,6 +16,24 @@ class CodeWriter():
         'pointer': 'THIS',
         'temp': 'R5',
     }
+    __operator_2_variable = {
+        'add': 'M+D',
+        'sub': 'M-D',
+        'and': 'M&D',
+        'or': 'M|D',
+    }
+    __operator_1_variable = {
+        'neg': '-M',
+        'not': '!M',
+    }
+    __operator_comp = {
+        'eq': 'JEQ',
+        'gt': 'JGT',
+        'lt': 'JLT',
+    }
+
+    def __init__(self):
+        self.__comp_index = 0
 
     def makePushPopCode(self, command: CommandLine) -> str:
         if command.command_type == CommandType.C_PUSH:
@@ -104,4 +122,53 @@ class CodeWriter():
                 @R15
                 A=M
                 M=D
+                """)
+
+    def makeArithmetic(self, command: CommandLine) -> str:
+        operator_name: str = command.arg1
+
+        if operator_name in self.__operator_2_variable:
+            operator: str = self.__operator_2_variable[operator_name]
+            return textwrap.dedent(f"""
+                // {operator_name}
+                @SP
+                A=M-1
+                D=M
+                A=A-1
+                M={operator}
+                D=A
+                @SP
+                M=D+1
+                """)
+        elif operator_name in self.__operator_1_variable:
+            operator: str = self.__operator_1_variable[operator_name]
+            return textwrap.dedent(f"""
+                // {operator_name}
+                @SP
+                AD=M-1
+                M={operator}
+                @SP
+                M=D+1
+                """)
+        else:
+            jump_label = f'COMP.{self.__comp_index}'
+            self.__comp_index = self.__comp_index + 1
+            operator: str = self.__operator_comp[operator_name]
+            return textwrap.dedent(f"""
+                // {operator_name}
+                @SP
+                AM=M-1
+                D=M
+                @SP
+                AM=M-1
+                D=M-D
+                M=-1
+                @{jump_label}
+                D;{operator}
+                @SP
+                A=M
+                M=0
+                ({jump_label})
+                @SP
+                M=M+1
                 """)

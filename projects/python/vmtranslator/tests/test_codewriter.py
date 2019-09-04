@@ -310,3 +310,176 @@ M=D
 """
 
     assert codewriter.makePushPopCode(command) == expected
+
+
+def test_add():
+    command = CommandLine(0, 'add')
+    codewriter = CodeWriter()
+    expected = """
+// add
+@SP
+A=M-1
+D=M
+A=A-1
+M=M+D
+D=A
+@SP
+M=D+1
+"""
+
+    assert codewriter.makeArithmetic(command) == expected
+
+
+def test_sub():
+    command = CommandLine(0, 'sub')
+    codewriter = CodeWriter()
+    expected = """
+// sub
+@SP
+A=M-1
+D=M
+A=A-1
+M=M-D
+D=A
+@SP
+M=D+1
+"""
+
+    assert codewriter.makeArithmetic(command) == expected
+
+
+def test_neg():
+    command = CommandLine(0, 'neg')
+    codewriter = CodeWriter()
+    expected = """
+// neg
+@SP
+AD=M-1
+M=-M
+@SP
+M=D+1
+"""
+
+    assert codewriter.makeArithmetic(command) == expected
+
+
+def test_eq_gt_lt():
+    """
+    add test jump label increment.
+    """
+    codewriter = CodeWriter()
+
+    command_eq = CommandLine(0, 'eq')
+    expected_eq = """
+// eq
+@SP
+AM=M-1
+D=M
+@SP
+AM=M-1
+D=M-D
+M=-1
+@COMP.0
+D;JEQ
+@SP
+A=M
+M=0
+(COMP.0)
+@SP
+M=M+1
+"""
+
+    command_gt = CommandLine(1, 'gt')
+    expected_gt = """
+// gt
+@SP
+AM=M-1
+D=M
+@SP
+AM=M-1
+D=M-D
+M=-1
+@COMP.1
+D;JGT
+@SP
+A=M
+M=0
+(COMP.1)
+@SP
+M=M+1
+"""
+
+    command_lt = CommandLine(2, 'lt')
+    expected_lt = """
+// lt
+@SP
+AM=M-1
+D=M
+@SP
+AM=M-1
+D=M-D
+M=-1
+@COMP.2
+D;JLT
+@SP
+A=M
+M=0
+(COMP.2)
+@SP
+M=M+1
+"""
+
+    assert codewriter.makeArithmetic(command_eq) == expected_eq
+    assert codewriter.makeArithmetic(command_gt) == expected_gt
+    assert codewriter.makeArithmetic(command_lt) == expected_lt
+
+
+def test_and():
+    command = CommandLine(0, 'and')
+    codewriter = CodeWriter()
+    expected = """
+// and
+@SP
+A=M-1
+D=M
+A=A-1
+M=M&D
+D=A
+@SP
+M=D+1
+"""
+
+    assert codewriter.makeArithmetic(command) == expected
+
+
+def test_or():
+    command = CommandLine(0, 'or')
+    codewriter = CodeWriter()
+    expected = """
+// or
+@SP
+A=M-1
+D=M
+A=A-1
+M=M|D
+D=A
+@SP
+M=D+1
+"""
+
+    assert codewriter.makeArithmetic(command) == expected
+
+
+def test_not():
+    command = CommandLine(0, 'not')
+    codewriter = CodeWriter()
+    expected = """
+// not
+@SP
+AD=M-1
+M=!M
+@SP
+M=D+1
+"""
+
+    assert codewriter.makeArithmetic(command) == expected
