@@ -1,4 +1,4 @@
-from . import CommandLine
+from . import CommandLine, CommandType
 import textwrap
 
 
@@ -18,6 +18,12 @@ class CodeWriter():
     }
 
     def makePushPopCode(self, command: CommandLine) -> str:
+        if command.command_type == CommandType.C_PUSH:
+            return self.makePushCode(command)
+        else:
+            return self.makePopCode(command)
+
+    def makePushCode(self, command: CommandLine) -> str:
         seg: str = command.arg1
         index: int = command.arg2
         if seg in self.__seg_start:
@@ -60,4 +66,42 @@ class CodeWriter():
                 M=D
                 @SP
                 M=M+1
+                """)
+
+    def makePopCode(self, command: CommandLine) -> str:
+        seg: str = command.arg1
+        index: int = command.arg2
+        if seg in self.__seg_start:
+            seg_start = self.__seg_start[seg]
+            return textwrap.dedent(f"""
+                // pop {seg} {index}
+                @{index}
+                D=A
+                @{seg_start}
+                D=M+D
+                @R15
+                M=D
+                @SP
+                AM=M-1
+                D=M
+                @R15
+                A=M
+                M=D
+                """)
+        else:
+            seg_start = self.__fix_seg_start[seg]
+            return textwrap.dedent(f"""
+                // pop {seg} {index}
+                @{index}
+                D=A
+                @{seg_start}
+                D=A+D
+                @R15
+                M=D
+                @SP
+                AM=M-1
+                D=M
+                @R15
+                A=M
+                M=D
                 """)

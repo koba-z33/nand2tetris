@@ -21,6 +21,28 @@ M=M+1
     assert codewriter.makePushPopCode(command) == expected
 
 
+def test_pop_argument():
+    command = CommandLine(0, 'pop argument 3')
+    codewriter = CodeWriter()
+    expected = """
+// pop argument 3
+@3
+D=A
+@ARG
+D=M+D
+@R15
+M=D
+@SP
+AM=M-1
+D=M
+@R15
+A=M
+M=D
+"""
+
+    assert codewriter.makePushPopCode(command) == expected
+
+
 def test_push_local():
     command = CommandLine(0, 'push local 10')
     codewriter = CodeWriter()
@@ -41,6 +63,28 @@ M=M+1
     assert codewriter.makePushPopCode(command) == expected
 
 
+def test_pop_local():
+    command = CommandLine(0, 'pop local 3')
+    codewriter = CodeWriter()
+    expected = """
+// pop local 3
+@3
+D=A
+@LCL
+D=M+D
+@R15
+M=D
+@SP
+AM=M-1
+D=M
+@R15
+A=M
+M=D
+"""
+
+    assert codewriter.makePushPopCode(command) == expected
+
+
 def test_push_static():
     command = CommandLine(0, 'push static 100')
     codewriter = CodeWriter()
@@ -56,6 +100,28 @@ A=M
 M=D
 @SP
 M=M+1
+"""
+
+    assert codewriter.makePushPopCode(command) == expected
+
+
+def test_pop_static():
+    command = CommandLine(0, 'pop static 3')
+    codewriter = CodeWriter()
+    expected = """
+// pop static 3
+@3
+D=A
+@16
+D=M+D
+@R15
+M=D
+@SP
+AM=M-1
+D=M
+@R15
+A=M
+M=D
 """
 
     assert codewriter.makePushPopCode(command) == expected
@@ -98,6 +164,28 @@ M=M+1
     assert codewriter.makePushPopCode(command) == expected
 
 
+def test_pop_this():
+    command = CommandLine(0, 'pop this 3')
+    codewriter = CodeWriter()
+    expected = """
+// pop this 3
+@3
+D=A
+@THIS
+D=M+D
+@R15
+M=D
+@SP
+AM=M-1
+D=M
+@R15
+A=M
+M=D
+"""
+
+    assert codewriter.makePushPopCode(command) == expected
+
+
 def test_push_that():
     command = CommandLine(0, 'push that 5')
     codewriter = CodeWriter()
@@ -113,6 +201,28 @@ A=M
 M=D
 @SP
 M=M+1
+"""
+
+    assert codewriter.makePushPopCode(command) == expected
+
+
+def test_pop_that():
+    command = CommandLine(0, 'pop that 3')
+    codewriter = CodeWriter()
+    expected = """
+// pop that 3
+@3
+D=A
+@THAT
+D=M+D
+@R15
+M=D
+@SP
+AM=M-1
+D=M
+@R15
+A=M
+M=D
 """
 
     assert codewriter.makePushPopCode(command) == expected
@@ -138,6 +248,28 @@ M=M+1
     assert codewriter.makePushPopCode(command) == expected
 
 
+def test_pop_pointer():
+    command = CommandLine(0, 'pop pointer 1')
+    codewriter = CodeWriter()
+    expected = """
+// pop pointer 1
+@1
+D=A
+@THIS
+D=A+D
+@R15
+M=D
+@SP
+AM=M-1
+D=M
+@R15
+A=M
+M=D
+"""
+
+    assert codewriter.makePushPopCode(command) == expected
+
+
 def test_push_temp():
     command = CommandLine(0, 'push temp 3')
     codewriter = CodeWriter()
@@ -153,6 +285,28 @@ A=M
 M=D
 @SP
 M=M+1
+"""
+
+    assert codewriter.makePushPopCode(command) == expected
+
+
+def test_pop_temp():
+    command = CommandLine(0, 'pop temp 6')
+    codewriter = CodeWriter()
+    expected = """
+// pop temp 6
+@6
+D=A
+@R5
+D=A+D
+@R15
+M=D
+@SP
+AM=M-1
+D=M
+@R15
+A=M
+M=D
 """
 
     assert codewriter.makePushPopCode(command) == expected
