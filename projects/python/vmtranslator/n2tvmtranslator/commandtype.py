@@ -7,3 +7,4 @@ class CommandType(Enum):
     C_PUSH = 1
     C_POP = 2
     C_LABEL = 3
+    C_IF = 4

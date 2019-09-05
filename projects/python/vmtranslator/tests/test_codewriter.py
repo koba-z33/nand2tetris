@@ -497,3 +497,19 @@ def test_label():
 """
 
     assert codewriter.makeAssembleCode(command) == expected
+
+
+def test_if_goto():
+    command = CommandLine(0, 'if-goto hoyoyo')
+    codewriter = CodeWriter()
+    codewriter.vm_filename = 'test'
+    expected = """
+// if-goto hoyoyo
+@SP
+AM=M-1
+D=M
+@test.hoyoyo
+D;JNE
+"""
+
+    assert codewriter.makeAssembleCode(command) == expected

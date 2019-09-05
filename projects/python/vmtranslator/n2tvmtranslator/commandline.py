@@ -10,6 +10,7 @@ class CommandLine():
         'push': CommandType.C_PUSH,
         'pop': CommandType.C_POP,
         'label': CommandType.C_LABEL,
+        'if-goto': CommandType.C_IF,
     }
 
     def __init__(self, line_no: int, raw_data: str):

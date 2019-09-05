@@ -52,6 +52,8 @@ class CodeWriter():
             return self.__makeArithmetic(command)
         elif command.command_type == CommandType.C_LABEL:
             return self.__makeLabel(command)
+        elif command.command_type == CommandType.C_IF:
+            return self.__makeIfGoto(command)
 
     def __makePushCode(self, command: CommandLine) -> str:
         seg: str = command.arg1
@@ -156,4 +158,14 @@ class CodeWriter():
         return textwrap.dedent(f"""
                 // label {command.arg1}
                 ({self.__vm_filename}.{command.arg1})
+                """)
+
+    def __makeIfGoto(self, command: CommandType) -> str:
+        return textwrap.dedent(f"""
+                // if-goto {command.arg1}
+                @SP
+                AM=M-1
+                D=M
+                @{self.__vm_filename}.{command.arg1}
+                D;JNE
                 """)
