@@ -5,6 +5,13 @@ class CommandLine():
     """ VMトランスレータコマンドラインオブジェクト
     """
 
+    __type_dic = {
+        '': CommandType.BLANK_LINE,
+        'push': CommandType.C_PUSH,
+        'pop': CommandType.C_POP,
+        'label': CommandType.C_LABEL,
+    }
+
     def __init__(self, line_no: int, raw_data: str):
         """コンストラクタ
 
@@ -18,6 +25,7 @@ class CommandLine():
         self.__line_no = line_no
         self.__raw_data = raw_data
         self.__data = self.__raw_data.split('//', 1)[0].strip()
+        self.__arg0 = self.__data.split()[0] if len(self.__data) != 0 else ''
 
     @property
     def line_no(self) -> int:
@@ -54,12 +62,8 @@ class CommandLine():
 
     @property
     def command_type(self) -> CommandType:
-        if len(self.__data) == 0:
-            return CommandType.BLANK_LINE
-        elif self.__data.startswith('push'):
-            return CommandType.C_PUSH
-        elif self.__data.startswith('pop'):
-            return CommandType.C_POP
+        if self.__arg0 in self.__type_dic:
+            return self.__type_dic[self.__arg0]
         else:
             return CommandType.C_ARITHMETIC
 
@@ -67,9 +71,7 @@ class CommandLine():
     def arg1(self) -> str:
         if self.command_type == CommandType.C_ARITHMETIC:
             return self.__data
-        elif self.command_type == CommandType.C_POP:
-            return self.__data.split()[1]
-        elif self.command_type == CommandType.C_PUSH:
+        else:
             return self.__data.split()[1]
 
     @property

@@ -17,6 +17,7 @@ lt
 and
 or
 not
+label hogege
 """
     vmdata_lines = vmdata.split('\n')
 
@@ -89,3 +90,11 @@ not
     parser.advance()
     assert parser.command.command_type == CommandType.C_ARITHMETIC
     assert parser.command.arg1 == 'not'
+
+    # label hogege
+    assert parser.has_more_commands is True
+    parser.advance()
+    assert parser.command.command_type == CommandType.C_LABEL
+    assert parser.command.arg1 == 'hogege'
+
+    assert parser.has_more_commands is False

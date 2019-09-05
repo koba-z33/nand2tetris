@@ -50,6 +50,8 @@ class CodeWriter():
             return self.__makePushCode(command)
         elif command.command_type == CommandType.C_ARITHMETIC:
             return self.__makeArithmetic(command)
+        elif command.command_type == CommandType.C_LABEL:
+            return self.__makeLabel(command)
 
     def __makePushCode(self, command: CommandLine) -> str:
         seg: str = command.arg1
@@ -148,4 +150,10 @@ class CodeWriter():
                 ({jump_label})
                 @SP
                 M=M+1
+                """)
+
+    def __makeLabel(self, command: CommandLine) -> str:
+        return textwrap.dedent(f"""
+                // label {command.arg1}
+                ({self.__vm_filename}.{command.arg1})
                 """)

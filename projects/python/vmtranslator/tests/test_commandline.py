@@ -42,6 +42,7 @@ def test_init_ignorecomment():
                              ('and', CommandType.C_ARITHMETIC),
                              ('or', CommandType.C_ARITHMETIC),
                              ('not', CommandType.C_ARITHMETIC),
+                             ('label hogege', CommandType.C_LABEL),
                          ])
 def test_commandtype(raw_data_command_type, command_type):
     commandline = CommandLine(0, raw_data_command_type)
@@ -61,6 +62,7 @@ def test_commandtype(raw_data_command_type, command_type):
                              ('and', 'and'),
                              ('or', 'or'),
                              ('not', 'not'),
+                             ('label hogege', 'hogege'),
                          ])
 def test_arg1(raw_data_arg1, arg1):
     commandline = CommandLine(0, raw_data_arg1)

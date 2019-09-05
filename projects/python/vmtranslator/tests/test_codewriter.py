@@ -485,3 +485,15 @@ M=D+1
 """
 
     assert codewriter.makeAssembleCode(command) == expected
+
+
+def test_label():
+    command = CommandLine(0, 'label hogege')
+    codewriter = CodeWriter()
+    codewriter.vm_filename = 'test'
+    expected = """
+// label hogege
+(test.hogege)
+"""
+
+    assert codewriter.makeAssembleCode(command) == expected
