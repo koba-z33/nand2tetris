@@ -8,3 +8,4 @@ class CommandType(Enum):
     C_POP = 2
     C_LABEL = 3
     C_IF = 4
+    C_GOTO = 5

@@ -513,3 +513,16 @@ D;JNE
 """
 
     assert codewriter.makeAssembleCode(command) == expected
+
+
+def test_goto():
+    command = CommandLine(0, 'goto hahaha')
+    codewriter = CodeWriter()
+    codewriter.vm_filename = 'test'
+    expected = """
+// goto hahaha
+@test.hahaha
+0;JMP
+"""
+
+    assert codewriter.makeAssembleCode(command) == expected

@@ -44,6 +44,7 @@ def test_init_ignorecomment():
                              ('not', CommandType.C_ARITHMETIC),
                              ('label hogege', CommandType.C_LABEL),
                              ('if-goto hogege', CommandType.C_IF),
+                             ('goto hahahe', CommandType.C_GOTO),
                          ])
 def test_commandtype(raw_data_command_type, command_type):
     commandline = CommandLine(0, raw_data_command_type)
@@ -65,6 +66,7 @@ def test_commandtype(raw_data_command_type, command_type):
                              ('not', 'not'),
                              ('label hogege', 'hogege'),
                              ('if-goto hoyoyo', 'hoyoyo'),
+                             ('goto hahaha', 'hahaha'),
                          ])
 def test_arg1(raw_data_arg1, arg1):
     commandline = CommandLine(0, raw_data_arg1)

@@ -18,6 +18,8 @@ and
 or
 not
 label hogege
+if-goto hoyoyo
+goto hahaha
 """
     vmdata_lines = vmdata.split('\n')
 
@@ -96,5 +98,17 @@ label hogege
     parser.advance()
     assert parser.command.command_type == CommandType.C_LABEL
     assert parser.command.arg1 == 'hogege'
+
+    # if-goto hoyoyo
+    assert parser.has_more_commands is True
+    parser.advance()
+    assert parser.command.command_type == CommandType.C_IF
+    assert parser.command.arg1 == 'hoyoyo'
+
+    # goto hahaha
+    assert parser.has_more_commands is True
+    parser.advance()
+    assert parser.command.command_type == CommandType.C_GOTO
+    assert parser.command.arg1 == 'hahaha'
 
     assert parser.has_more_commands is False

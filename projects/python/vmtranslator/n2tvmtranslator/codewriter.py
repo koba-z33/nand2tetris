@@ -54,6 +54,8 @@ class CodeWriter():
             return self.__makeLabel(command)
         elif command.command_type == CommandType.C_IF:
             return self.__makeIfGoto(command)
+        elif command.command_type == CommandType.C_GOTO:
+            return self.__makeGoto(command)
 
     def __makePushCode(self, command: CommandLine) -> str:
         seg: str = command.arg1
@@ -168,4 +170,11 @@ class CodeWriter():
                 D=M
                 @{self.__vm_filename}.{command.arg1}
                 D;JNE
+                """)
+
+    def __makeGoto(self, command: CommandLine) -> str:
+        return textwrap.dedent(f"""
+                // goto {command.arg1}
+                @{self.__vm_filename}.{command.arg1}
+                0;JMP
                 """)

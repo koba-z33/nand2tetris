@@ -11,6 +11,7 @@ class CommandLine():
         'pop': CommandType.C_POP,
         'label': CommandType.C_LABEL,
         'if-goto': CommandType.C_IF,
+        'goto': CommandType.C_GOTO,
     }
 
     def __init__(self, line_no: int, raw_data: str):
