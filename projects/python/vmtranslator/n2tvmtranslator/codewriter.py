@@ -32,6 +32,16 @@ class CodeWriter():
 
     def __init__(self):
         self.__comp_index = 0
+        self.__vm_filename = ''
+
+    @property
+    def vm_filename(self) -> str:
+        return self.__vm_filename
+
+    @vm_filename.setter
+    def vm_filename(self, v: str):
+        self.__vm_filename = v
+        self.__comp_index = 0
 
     def makeAssembleCode(self, command: CommandLine) -> str:
         if command.command_type == CommandType.C_POP:
@@ -118,7 +128,7 @@ class CodeWriter():
                 M=D+1
                 """)
         else:
-            jump_label = f'COMP.{self.__comp_index}'
+            jump_label = f'{self.__vm_filename}.COMP.{self.__comp_index}'
             self.__comp_index = self.__comp_index + 1
             operator: str = self.__operator_comp[operator_name]
             return textwrap.dedent(f"""

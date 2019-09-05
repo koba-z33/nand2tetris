@@ -379,12 +379,12 @@ D=M
 AM=M-1
 D=M-D
 M=-1
-@COMP.0
+@test.COMP.0
 D;JEQ
 @SP
 A=M
 M=0
-(COMP.0)
+(test.COMP.0)
 @SP
 M=M+1
 """
@@ -399,12 +399,12 @@ D=M
 AM=M-1
 D=M-D
 M=-1
-@COMP.1
+@test.COMP.1
 D;JGT
 @SP
 A=M
 M=0
-(COMP.1)
+(test.COMP.1)
 @SP
 M=M+1
 """
@@ -419,18 +419,20 @@ D=M
 AM=M-1
 D=M-D
 M=-1
-@COMP.2
+@test2.COMP.0
 D;JLT
 @SP
 A=M
 M=0
-(COMP.2)
+(test2.COMP.0)
 @SP
 M=M+1
 """
 
+    codewriter.vm_filename = "test"
     assert codewriter.makeAssembleCode(command_eq) == expected_eq
     assert codewriter.makeAssembleCode(command_gt) == expected_gt
+    codewriter.vm_filename = "test2"
     assert codewriter.makeAssembleCode(command_lt) == expected_lt
 
 

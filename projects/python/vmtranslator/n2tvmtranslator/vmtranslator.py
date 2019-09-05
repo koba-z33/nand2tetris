@@ -14,6 +14,8 @@ class VMtranslator():
 
         parser: Parser = Parser(vm_lines)
 
+        self.__codewriter.vm_filename = self.__strip_vm_filename(filename)
+
         asm = ''
         while parser.has_more_commands:
             parser.advance()
@@ -48,6 +50,10 @@ class VMtranslator():
             'asm_file': asm_file,
             'vm_files': vm_files,
         }
+
+    @staticmethod
+    def __strip_vm_filename(vm_filename: str) -> str:
+        return os.path.splitext(os.path.basename(vm_filename))[0]
 
 
 def main():
