@@ -534,7 +534,7 @@ def test_function():
     codewriter.vm_filename = 'test'
     expected = """
 // function fact 3
-(test.fact)
+(fact)
 
 @SP
 A=M

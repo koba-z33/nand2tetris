@@ -190,7 +190,7 @@ class CodeWriter():
     def __makeFunction(self, command: CommandLine) -> str:
         asm = textwrap.dedent(f"""
                 // function {command.arg1} {command.arg2}
-                ({self.__vm_filename}.{command.arg1})
+                ({command.arg1})
                 """)
         for i in range(command.arg2):
             asm = asm + textwrap.dedent("""

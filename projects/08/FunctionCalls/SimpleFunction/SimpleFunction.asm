@@ -1,6 +1,6 @@
 
 // function SimpleFunction.test 2
-(SimpleFunction.SimpleFunction.test)
+(SimpleFunction.test)
 
 @SP
 A=M
