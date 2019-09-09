@@ -526,3 +526,33 @@ def test_goto():
 """
 
     assert codewriter.makeAssembleCode(command) == expected
+
+
+def test_function():
+    command = CommandLine(0, 'function fact 3')
+    codewriter = CodeWriter()
+    codewriter.vm_filename = 'test'
+    expected = """
+// function fact 3
+(test.fact)
+
+@SP
+A=M
+M=0
+@SP
+M=M+1
+
+@SP
+A=M
+M=0
+@SP
+M=M+1
+
+@SP
+A=M
+M=0
+@SP
+M=M+1
+"""
+
+    assert codewriter.makeAssembleCode(command) == expected

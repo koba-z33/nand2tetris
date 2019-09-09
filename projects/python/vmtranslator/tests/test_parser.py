@@ -20,6 +20,7 @@ not
 label hogege
 if-goto hoyoyo
 goto hahaha
+function fact 2
 """
     vmdata_lines = vmdata.split('\n')
 
@@ -110,5 +111,12 @@ goto hahaha
     parser.advance()
     assert parser.command.command_type == CommandType.C_GOTO
     assert parser.command.arg1 == 'hahaha'
+
+    # function fact 2
+    assert parser.has_more_commands is True
+    parser.advance()
+    assert parser.command.command_type == CommandType.C_FUNCTION
+    assert parser.command.arg1 == 'fact'
+    assert parser.command.arg2 == 2
 
     assert parser.has_more_commands is False

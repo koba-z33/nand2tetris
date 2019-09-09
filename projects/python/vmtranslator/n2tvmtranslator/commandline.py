@@ -12,6 +12,7 @@ class CommandLine():
         'label': CommandType.C_LABEL,
         'if-goto': CommandType.C_IF,
         'goto': CommandType.C_GOTO,
+        'function': CommandType.C_FUNCTION,
     }
 
     def __init__(self, line_no: int, raw_data: str):
@@ -78,7 +79,4 @@ class CommandLine():
 
     @property
     def arg2(self) -> int:
-        if self.command_type == CommandType.C_POP:
-            return int(self.__data.split()[2])
-        elif self.command_type == CommandType.C_PUSH:
-            return int(self.__data.split()[2])
+        return int(self.__data.split()[2])

@@ -56,6 +56,8 @@ class CodeWriter():
             return self.__makeIfGoto(command)
         elif command.command_type == CommandType.C_GOTO:
             return self.__makeGoto(command)
+        elif command.command_type == CommandType.C_FUNCTION:
+            return self.__makeFunction(command)
 
     def __makePushCode(self, command: CommandLine) -> str:
         seg: str = command.arg1
@@ -178,3 +180,18 @@ class CodeWriter():
                 @{self.__vm_filename}.{command.arg1}
                 0;JMP
                 """)
+
+    def __makeFunction(self, command: CommandLine) -> str:
+        asm = textwrap.dedent(f"""
+                // function {command.arg1} {command.arg2}
+                ({self.__vm_filename}.{command.arg1})
+                """)
+        for i in range(command.arg2):
+            asm = asm + textwrap.dedent("""
+                        @SP
+                        A=M
+                        M=0
+                        @SP
+                        M=M+1
+                        """)
+        return asm

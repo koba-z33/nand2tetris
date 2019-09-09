@@ -45,6 +45,7 @@ def test_init_ignorecomment():
                              ('label hogege', CommandType.C_LABEL),
                              ('if-goto hogege', CommandType.C_IF),
                              ('goto hahahe', CommandType.C_GOTO),
+                             ('function fact 2', CommandType.C_FUNCTION),
                          ])
 def test_commandtype(raw_data_command_type, command_type):
     commandline = CommandLine(0, raw_data_command_type)
@@ -67,6 +68,7 @@ def test_commandtype(raw_data_command_type, command_type):
                              ('label hogege', 'hogege'),
                              ('if-goto hoyoyo', 'hoyoyo'),
                              ('goto hahaha', 'hahaha'),
+                             ('function fact 2', 'fact'),
                          ])
 def test_arg1(raw_data_arg1, arg1):
     commandline = CommandLine(0, raw_data_arg1)
@@ -77,6 +79,7 @@ def test_arg1(raw_data_arg1, arg1):
                          [
                              ('push constant 0', 0),
                              ('pop   local 1234', 1234),
+                             ('function fact 2', 2),
                          ])
 def test_arg2(raw_data_arg2, arg2):
     commandline = CommandLine(0, raw_data_arg2)
