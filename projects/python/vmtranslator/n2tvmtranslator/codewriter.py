@@ -35,8 +35,7 @@ class CodeWriter():
     __tmp_ret = 'R13'
 
     def __init__(self):
-        self.__comp_index = 0
-        self.__vm_filename = ''
+        self.vm_filename = ''
 
     @property
     def vm_filename(self) -> str:
