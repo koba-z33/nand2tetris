@@ -30,6 +30,10 @@ class CodeWriter():
         'lt': 'JLT',
     }
 
+    __tmp_pop = 'R15'
+    __tmp_frame = 'R14'
+    __tmp_ret = 'R13'
+
     def __init__(self):
         self.__comp_index = 0
         self.__vm_filename = ''
@@ -58,6 +62,8 @@ class CodeWriter():
             return self.__makeGoto(command)
         elif command.command_type == CommandType.C_FUNCTION:
             return self.__makeFunction(command)
+        elif command.command_type == CommandType.C_RETURN:
+            return self.__makeReturn(command)
 
     def __makePushCode(self, command: CommandLine) -> str:
         seg: str = command.arg1
@@ -99,12 +105,12 @@ class CodeWriter():
             D=A
             @{seg_start[0]}
             D={seg_start[1]}+D
-            @R15
+            @{self.__tmp_pop}
             M=D
             @SP
             AM=M-1
             D=M
-            @R15
+            @{self.__tmp_pop}
             A=M
             M=D
             """)
@@ -195,3 +201,60 @@ class CodeWriter():
                         M=M+1
                         """)
         return asm
+
+    def __makeReturn(self, command: CommandLine) -> str:
+        return textwrap.dedent(f"""
+                // return
+                @LCL    // FRAME = LCL
+                D=M
+                @{self.__tmp_frame}
+                M=D
+                @5      // RET = *(FRAME-5)
+                D=A
+                @{self.__tmp_frame}
+                A=M-D
+                D=M
+                @{self.__tmp_ret}
+                M=D
+                @SP     // *ARG = pop()
+                AM=M-1
+                D=M
+                @ARG
+                A=M
+                M=D
+                @ARG    // SP = ARG+1
+                D=M+1
+                @SP
+                M=D
+                @1      // THAT = *(FRAME-1)
+                D=A
+                @{self.__tmp_frame}
+                A=M-D
+                D=M
+                @THAT
+                M=D
+                @2      // THIS = *(FRAME-2)
+                D=A
+                @{self.__tmp_frame}
+                A=M-D
+                D=M
+                @THIS
+                M=D
+                @3      // ARG = *(FRAME-3)
+                D=A
+                @{self.__tmp_frame}
+                A=M-D
+                D=M
+                @ARG
+                M=D
+                @4      // LCL = *(FRAME-4)
+                D=A
+                @{self.__tmp_frame}
+                A=M-D
+                D=M
+                @LCL
+                M=D
+                @{self.__tmp_ret}    // goto RET
+                A=M
+                0;JMP
+                """)

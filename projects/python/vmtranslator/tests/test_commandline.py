@@ -46,6 +46,7 @@ def test_init_ignorecomment():
                              ('if-goto hogege', CommandType.C_IF),
                              ('goto hahahe', CommandType.C_GOTO),
                              ('function fact 2', CommandType.C_FUNCTION),
+                             ('return', CommandType.C_RETURN),
                          ])
 def test_commandtype(raw_data_command_type, command_type):
     commandline = CommandLine(0, raw_data_command_type)

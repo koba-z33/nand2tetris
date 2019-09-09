@@ -13,6 +13,7 @@ class CommandLine():
         'if-goto': CommandType.C_IF,
         'goto': CommandType.C_GOTO,
         'function': CommandType.C_FUNCTION,
+        'return': CommandType.C_RETURN,
     }
 
     def __init__(self, line_no: int, raw_data: str):

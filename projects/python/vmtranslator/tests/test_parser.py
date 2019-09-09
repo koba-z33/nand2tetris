@@ -21,6 +21,7 @@ label hogege
 if-goto hoyoyo
 goto hahaha
 function fact 2
+return
 """
     vmdata_lines = vmdata.split('\n')
 
@@ -118,5 +119,10 @@ function fact 2
     assert parser.command.command_type == CommandType.C_FUNCTION
     assert parser.command.arg1 == 'fact'
     assert parser.command.arg2 == 2
+
+    # return
+    assert parser.has_more_commands is True
+    parser.advance()
+    assert parser.command.command_type == CommandType.C_RETURN
 
     assert parser.has_more_commands is False
