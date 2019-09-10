@@ -36,6 +36,7 @@ class CodeWriter():
 
     def __init__(self):
         self.vm_filename = ''
+        self._vm_funcname = ''
 
     @property
     def vm_filename(self) -> str:
@@ -45,6 +46,15 @@ class CodeWriter():
     def vm_filename(self, v: str):
         self.__vm_filename = v
         self.__comp_index = 0
+
+    @property
+    def _vm_funcname(self) -> str:
+        return self.__vm_funcname
+
+    @_vm_funcname.setter
+    def _vm_funcname(self, v: str):
+        self.__vm_funcname = v
+        self.__vm_func_index = 0
 
     def makeAssembleCode(self, command: CommandLine) -> str:
         if command.command_type == CommandType.C_POP:
@@ -166,7 +176,7 @@ class CodeWriter():
     def __makeLabel(self, command: CommandLine) -> str:
         return textwrap.dedent(f"""
                 // label {command.arg1}
-                ({self.__vm_filename}.{command.arg1})
+                ({self.__makeLabelStr(command.arg1)})
                 """)
 
     def __makeIfGoto(self, command: CommandType) -> str:
@@ -175,18 +185,22 @@ class CodeWriter():
                 @SP
                 AM=M-1
                 D=M
-                @{self.__vm_filename}.{command.arg1}
+                @{self.__makeLabelStr(command.arg1)}
                 D;JNE
                 """)
 
     def __makeGoto(self, command: CommandLine) -> str:
         return textwrap.dedent(f"""
                 // goto {command.arg1}
-                @{self.__vm_filename}.{command.arg1}
+                @{self.__makeLabelStr(command.arg1)}
                 0;JMP
                 """)
 
+    def __makeLabelStr(self, label: str) -> str:
+        return f'{self._vm_funcname}${label}'
+
     def __makeFunction(self, command: CommandLine) -> str:
+        self._vm_funcname = command.arg1
         asm = textwrap.dedent(f"""
                 // function {command.arg1} {command.arg2}
                 ({command.arg1})
@@ -202,6 +216,7 @@ class CodeWriter():
         return asm
 
     def __makeReturn(self, command: CommandLine) -> str:
+        self._vm_funcname = ''
         return textwrap.dedent(f"""
                 // return
                 @LCL    // FRAME = LCL

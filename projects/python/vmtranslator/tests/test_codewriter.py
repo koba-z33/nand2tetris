@@ -488,44 +488,92 @@ M=D+1
 
 
 def test_label():
-    command = CommandLine(0, 'label hogege')
+    command_func = CommandLine(0, 'function func1 2')
+    command = CommandLine(1, 'label hogege')
+    command_return = CommandLine(2, 'return')
+
     codewriter = CodeWriter()
-    codewriter.vm_filename = 'test'
-    expected = """
+    expected_in_func = """
 // label hogege
-(test.hogege)
+(func1$hogege)
+"""
+    expected_out_func = """
+// label hogege
+($hogege)
 """
 
-    assert codewriter.makeAssembleCode(command) == expected
+    # out function
+    assert codewriter.makeAssembleCode(command) == expected_out_func
+    # in function
+    codewriter.makeAssembleCode(command_func)
+    assert codewriter.makeAssembleCode(command) == expected_in_func
+    codewriter.makeAssembleCode(command_return)
+    # out function
+    assert codewriter.makeAssembleCode(command) == expected_out_func
 
 
 def test_if_goto():
-    command = CommandLine(0, 'if-goto hoyoyo')
+    command_func = CommandLine(0, 'function func3 2')
+    command = CommandLine(1, 'if-goto hoyoyo')
+    command_return = CommandLine(2, 'return')
+
     codewriter = CodeWriter()
     codewriter.vm_filename = 'test'
-    expected = """
+    expected_in_func = """
 // if-goto hoyoyo
 @SP
 AM=M-1
 D=M
-@test.hoyoyo
+@func3$hoyoyo
 D;JNE
 """
 
-    assert codewriter.makeAssembleCode(command) == expected
+    expected_out_func = """
+// if-goto hoyoyo
+@SP
+AM=M-1
+D=M
+@$hoyoyo
+D;JNE
+"""
+
+    # out function
+    assert codewriter.makeAssembleCode(command) == expected_out_func
+    # in function
+    codewriter.makeAssembleCode(command_func)
+    assert codewriter.makeAssembleCode(command) == expected_in_func
+    codewriter.makeAssembleCode(command_return)
+    # out function
+    assert codewriter.makeAssembleCode(command) == expected_out_func
 
 
 def test_goto():
-    command = CommandLine(0, 'goto hahaha')
+    command_func = CommandLine(0, 'function func 2')
+    command = CommandLine(1, 'goto hahaha')
+    command_return = CommandLine(2, 'return')
+
     codewriter = CodeWriter()
     codewriter.vm_filename = 'test'
-    expected = """
+    expected_in_func = """
 // goto hahaha
-@test.hahaha
+@func$hahaha
 0;JMP
 """
 
-    assert codewriter.makeAssembleCode(command) == expected
+    expected_out_func = """
+// goto hahaha
+@$hahaha
+0;JMP
+"""
+
+    # out function
+    assert codewriter.makeAssembleCode(command) == expected_out_func
+    # in function
+    codewriter.makeAssembleCode(command_func)
+    assert codewriter.makeAssembleCode(command) == expected_in_func
+    codewriter.makeAssembleCode(command_return)
+    # out function
+    assert codewriter.makeAssembleCode(command) == expected_out_func
 
 
 def test_function():
