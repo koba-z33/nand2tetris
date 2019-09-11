@@ -40,10 +40,12 @@ class VMtranslator():
         import glob
 
         abs_path = os.path.abspath(argv)
-        asm_file = os.path.splitext(abs_path)[0] + '.asm'
         if os.path.isfile(abs_path):
+            asm_file = os.path.splitext(abs_path)[0] + '.asm'
             vm_files = [abs_path]
         else:
+            asm_file = os.path.join(abs_path,
+                                    os.path.basename(abs_path) + '.asm')
             vm_files = glob.glob(os.path.join(abs_path, '*.vm'))
 
         return {
