@@ -25,12 +25,12 @@ D=M
 AM=M-1
 D=M-D
 M=-1
-@StackTest.COMP.0
+@COMP.0
 D;JEQ
 @SP
 A=M
 M=0
-(StackTest.COMP.0)
+(COMP.0)
 @SP
 M=M+1
 
@@ -60,12 +60,12 @@ D=M
 AM=M-1
 D=M-D
 M=-1
-@StackTest.COMP.1
+@COMP.1
 D;JEQ
 @SP
 A=M
 M=0
-(StackTest.COMP.1)
+(COMP.1)
 @SP
 M=M+1
 
@@ -95,12 +95,12 @@ D=M
 AM=M-1
 D=M-D
 M=-1
-@StackTest.COMP.2
+@COMP.2
 D;JEQ
 @SP
 A=M
 M=0
-(StackTest.COMP.2)
+(COMP.2)
 @SP
 M=M+1
 
@@ -130,12 +130,12 @@ D=M
 AM=M-1
 D=M-D
 M=-1
-@StackTest.COMP.3
+@COMP.3
 D;JLT
 @SP
 A=M
 M=0
-(StackTest.COMP.3)
+(COMP.3)
 @SP
 M=M+1
 
@@ -165,12 +165,12 @@ D=M
 AM=M-1
 D=M-D
 M=-1
-@StackTest.COMP.4
+@COMP.4
 D;JLT
 @SP
 A=M
 M=0
-(StackTest.COMP.4)
+(COMP.4)
 @SP
 M=M+1
 
@@ -200,12 +200,12 @@ D=M
 AM=M-1
 D=M-D
 M=-1
-@StackTest.COMP.5
+@COMP.5
 D;JLT
 @SP
 A=M
 M=0
-(StackTest.COMP.5)
+(COMP.5)
 @SP
 M=M+1
 
@@ -235,12 +235,12 @@ D=M
 AM=M-1
 D=M-D
 M=-1
-@StackTest.COMP.6
+@COMP.6
 D;JGT
 @SP
 A=M
 M=0
-(StackTest.COMP.6)
+(COMP.6)
 @SP
 M=M+1
 
@@ -270,12 +270,12 @@ D=M
 AM=M-1
 D=M-D
 M=-1
-@StackTest.COMP.7
+@COMP.7
 D;JGT
 @SP
 A=M
 M=0
-(StackTest.COMP.7)
+(COMP.7)
 @SP
 M=M+1
 
@@ -305,12 +305,12 @@ D=M
 AM=M-1
 D=M-D
 M=-1
-@StackTest.COMP.8
+@COMP.8
 D;JGT
 @SP
 A=M
 M=0
-(StackTest.COMP.8)
+(COMP.8)
 @SP
 M=M+1
 

@@ -37,6 +37,7 @@ class CodeWriter():
     def __init__(self):
         self.vm_filename = ''
         self._vm_funcname = ''
+        self.__comp_index = 0
 
     @property
     def vm_filename(self) -> str:
@@ -45,7 +46,6 @@ class CodeWriter():
     @vm_filename.setter
     def vm_filename(self, v: str):
         self.__vm_filename = v
-        self.__comp_index = 0
 
     @property
     def _vm_funcname(self) -> str:
@@ -151,7 +151,7 @@ class CodeWriter():
                 M=D+1
                 """)
         else:
-            jump_label = f'{self.__vm_filename}.COMP.{self.__comp_index}'
+            jump_label = f'COMP.{self.__comp_index}'
             self.__comp_index = self.__comp_index + 1
             operator: str = self.__operator_comp[operator_name]
             return textwrap.dedent(f"""
