@@ -2,6 +2,18 @@ from . import CommandLine, CommandType
 import textwrap
 
 
+class LabelIncrementer():
+
+    def __init__(self, name: str):
+        self.__name = name
+        self.__index = 0
+
+    def name(self) -> str:
+        label = f'{self.__name}.{self.__index}'
+        self.__index = self.__index + 1
+        return label
+
+
 class CodeWriter():
     """ コードライター """
 
@@ -37,8 +49,8 @@ class CodeWriter():
     def __init__(self):
         self.vm_filename = ''
         self._vm_funcname = ''
-        self.__comp_index = 0
-        self.__return_index = 0
+        self.__comp_label = LabelIncrementer('COMP')
+        self.__return_label = LabelIncrementer('RETURN')
 
     @property
     def vm_filename(self) -> str:
@@ -166,8 +178,8 @@ class CodeWriter():
                 M=D+1
                 """)
         else:
-            jump_label = f'COMP.{self.__comp_index}'
-            self.__comp_index = self.__comp_index + 1
+            jump_label = self.__comp_label.name()
+
             operator: str = self.__operator_comp[operator_name]
             return textwrap.dedent(f"""
                 // {operator_name}
@@ -288,7 +300,7 @@ class CodeWriter():
                 """)
 
     def __makeCall(self, command: CommandLine) -> str:
-        return_label = self.__makeReturnLabel()
+        return_label = self.__return_label.name()
 
         return textwrap.dedent(f"""
                 // call {command.arg1} {command.arg2}
@@ -346,13 +358,3 @@ class CodeWriter():
                 // return-address
                 ({return_label})
                 """)
-
-    def __makeCompLabel(self) -> str:
-        label = f'COMP.{self.__comp_index}'
-        self.__comp_index = self.__comp_index + 1
-        return label
-
-    def __makeReturnLabel(self) -> str:
-        label = f'RETURN.{self.__return_index}'
-        self.__return_index = self.__return_index + 1
-        return label
