@@ -14,6 +14,7 @@ class CommandLine():
         'goto': CommandType.C_GOTO,
         'function': CommandType.C_FUNCTION,
         'return': CommandType.C_RETURN,
+        'call': CommandType.C_CALL,
     }
 
     def __init__(self, line_no: int, raw_data: str):

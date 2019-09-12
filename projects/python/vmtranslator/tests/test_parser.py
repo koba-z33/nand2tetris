@@ -22,6 +22,7 @@ if-goto hoyoyo
 goto hahaha
 function fact 2
 return
+call func 2
 """
     vmdata_lines = vmdata.split('\n')
 
@@ -124,5 +125,12 @@ return
     assert parser.has_more_commands is True
     parser.advance()
     assert parser.command.command_type == CommandType.C_RETURN
+
+    # call func 2
+    assert parser.has_more_commands is True
+    parser.advance()
+    assert parser.command.command_type == CommandType.C_CALL
+    assert parser.command.arg1 == 'func'
+    assert parser.command.arg2 == 2
 
     assert parser.has_more_commands is False

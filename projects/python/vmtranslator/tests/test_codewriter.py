@@ -509,7 +509,7 @@ def test_label():
     assert codewriter.makeAssembleCode(command) == expected_in_func
     codewriter.makeAssembleCode(command_return)
     # out function
-    assert codewriter.makeAssembleCode(command) == expected_out_func
+    assert codewriter.makeAssembleCode(command) == expected_in_func
 
 
 def test_if_goto():
@@ -544,7 +544,7 @@ D;JNE
     assert codewriter.makeAssembleCode(command) == expected_in_func
     codewriter.makeAssembleCode(command_return)
     # out function
-    assert codewriter.makeAssembleCode(command) == expected_out_func
+    assert codewriter.makeAssembleCode(command) == expected_in_func
 
 
 def test_goto():
@@ -573,7 +573,7 @@ def test_goto():
     assert codewriter.makeAssembleCode(command) == expected_in_func
     codewriter.makeAssembleCode(command_return)
     # out function
-    assert codewriter.makeAssembleCode(command) == expected_out_func
+    assert codewriter.makeAssembleCode(command) == expected_in_func
 
 
 def test_function():
@@ -667,3 +667,134 @@ A=M
 """
 
     assert codewriter.makeAssembleCode(command) == expected
+
+
+def test_call():
+    command = CommandLine(0, 'call func 2')
+    codewriter = CodeWriter()
+    expected = """
+// call func 2
+// push return-adress
+@RETURN.0
+D=A
+@SP
+A=M
+M=D
+@SP
+M=M+1
+@LCL    // push LCL
+D=M
+@SP
+A=M
+M=D
+@SP
+M=M+1
+@ARG    // push ARG
+D=M
+@SP
+A=M
+M=D
+@SP
+M=M+1
+@THIS   // push THIS
+D=M
+@SP
+A=M
+M=D
+@SP
+M=M+1
+@THAT   // push THAT
+D=M
+@SP
+A=M
+M=D
+@SP
+M=M+1
+@SP     // ARG = SP-n-5
+D=M
+@2
+D=D-A
+@5
+D=D-A
+@ARG
+M=D
+@SP     // LCL = SP
+D=M
+@LCL
+M=D
+// goto f
+@func
+0;JMP
+// return-address
+(RETURN.0)
+"""
+
+    assert codewriter.makeAssembleCode(command) == expected
+
+
+def test_makeInit():
+    codewriter = CodeWriter()
+    expected = """
+// bootstrap
+@256    // set stack-pointer
+D=A
+@SP
+M=D
+
+// call Sys.init 0
+// push return-adress
+@RETURN.0
+D=A
+@SP
+A=M
+M=D
+@SP
+M=M+1
+@LCL    // push LCL
+D=M
+@SP
+A=M
+M=D
+@SP
+M=M+1
+@ARG    // push ARG
+D=M
+@SP
+A=M
+M=D
+@SP
+M=M+1
+@THIS   // push THIS
+D=M
+@SP
+A=M
+M=D
+@SP
+M=M+1
+@THAT   // push THAT
+D=M
+@SP
+A=M
+M=D
+@SP
+M=M+1
+@SP     // ARG = SP-n-5
+D=M
+@0
+D=D-A
+@5
+D=D-A
+@ARG
+M=D
+@SP     // LCL = SP
+D=M
+@LCL
+M=D
+// goto f
+@Sys.init
+0;JMP
+// return-address
+(RETURN.0)
+"""
+
+    assert codewriter.makeInit() == expected

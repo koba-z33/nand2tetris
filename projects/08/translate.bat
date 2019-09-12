@@ -1,4 +1,5 @@
-VMtranslator.exe .\ProgramFlow\BasicLoop\BasicLoop.vm
-VMtranslator.exe .\ProgramFlow\FibonacciSeries\FibonacciSeries.vm
+VMtranslator.exe .\ProgramFlow\BasicLoop\BasicLoop.vm --noInit
+VMtranslator.exe .\ProgramFlow\FibonacciSeries\FibonacciSeries.vm --noInit
 
-VMtranslator.exe .\FunctionCalls\SimpleFunction\SimpleFunction.vm
+VMtranslator.exe .\FunctionCalls\SimpleFunction\SimpleFunction.vm --noInit
+VMtranslator.exe .\FunctionCalls\FibonacciElement\

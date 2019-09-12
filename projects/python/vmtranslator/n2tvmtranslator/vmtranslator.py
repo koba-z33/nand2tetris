@@ -7,6 +7,7 @@ class VMtranslator():
 
     def __init__(self):
         self.__codewriter = CodeWriter()
+        self.is_make_init = True
 
     def translate(self, filename: str) -> str:
         with open(filename, 'r') as f:
@@ -16,7 +17,12 @@ class VMtranslator():
 
         self.__codewriter.vm_filename = self.__strip_vm_filename(filename)
 
-        asm = ''
+        if self.is_make_init is True:
+            asm = self.__codewriter.makeInit()
+        else:
+            asm = ''
+        self.is_make_init = False
+
         while parser.has_more_commands:
             parser.advance()
             command: CommandLine = parser.command
@@ -64,6 +70,9 @@ def main():
     vmtranslator = VMtranslator()
 
     file_info = vmtranslator.make_file_info(argv)
+
+    if len(sys.argv) > 2 and sys.argv[2] == '--noInit':
+        vmtranslator.is_make_init = False
 
     print(f'VMtranslate {argv} -> {file_info["asm_file"]}')
 

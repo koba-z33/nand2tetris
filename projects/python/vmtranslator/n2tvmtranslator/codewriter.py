@@ -38,6 +38,7 @@ class CodeWriter():
         self.vm_filename = ''
         self._vm_funcname = ''
         self.__comp_index = 0
+        self.__return_index = 0
 
     @property
     def vm_filename(self) -> str:
@@ -54,7 +55,17 @@ class CodeWriter():
     @_vm_funcname.setter
     def _vm_funcname(self, v: str):
         self.__vm_funcname = v
-        self.__vm_func_index = 0
+
+    def makeInit(self) -> str:
+        call_init = self.__makeCall(CommandLine(-1, 'call Sys.init 0'))
+
+        return textwrap.dedent(f"""
+            // bootstrap
+            @256    // set stack-pointer
+            D=A
+            @SP
+            M=D
+            """) + call_init
 
     def makeAssembleCode(self, command: CommandLine) -> str:
         if command.command_type == CommandType.C_POP:
@@ -73,6 +84,10 @@ class CodeWriter():
             return self.__makeFunction(command)
         elif command.command_type == CommandType.C_RETURN:
             return self.__makeReturn(command)
+        elif command.command_type == CommandType.C_CALL:
+            return self.__makeCall(command)
+        else:
+            raise Exception('Unknown command')
 
     def __makePushCode(self, command: CommandLine) -> str:
         seg: str = command.arg1
@@ -216,7 +231,6 @@ class CodeWriter():
         return asm
 
     def __makeReturn(self, command: CommandLine) -> str:
-        self._vm_funcname = ''
         return textwrap.dedent(f"""
                 // return
                 @LCL    // FRAME = LCL
@@ -272,3 +286,73 @@ class CodeWriter():
                 A=M
                 0;JMP
                 """)
+
+    def __makeCall(self, command: CommandLine) -> str:
+        return_label = self.__makeReturnLabel()
+
+        return textwrap.dedent(f"""
+                // call {command.arg1} {command.arg2}
+                // push return-adress
+                @{return_label}
+                D=A
+                @SP
+                A=M
+                M=D
+                @SP
+                M=M+1
+                @LCL    // push LCL
+                D=M
+                @SP
+                A=M
+                M=D
+                @SP
+                M=M+1
+                @ARG    // push ARG
+                D=M
+                @SP
+                A=M
+                M=D
+                @SP
+                M=M+1
+                @THIS   // push THIS
+                D=M
+                @SP
+                A=M
+                M=D
+                @SP
+                M=M+1
+                @THAT   // push THAT
+                D=M
+                @SP
+                A=M
+                M=D
+                @SP
+                M=M+1
+                @SP     // ARG = SP-n-5
+                D=M
+                @{command.arg2}
+                D=D-A
+                @5
+                D=D-A
+                @ARG
+                M=D
+                @SP     // LCL = SP
+                D=M
+                @LCL
+                M=D
+                // goto f
+                @{command.arg1}
+                0;JMP
+                // return-address
+                ({return_label})
+                """)
+
+    def __makeCompLabel(self) -> str:
+        label = f'COMP.{self.__comp_index}'
+        self.__comp_index = self.__comp_index + 1
+        return label
+
+    def __makeReturnLabel(self) -> str:
+        label = f'RETURN.{self.__return_index}'
+        self.__return_index = self.__return_index + 1
+        return label
