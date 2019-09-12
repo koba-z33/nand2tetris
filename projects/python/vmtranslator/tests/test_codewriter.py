@@ -88,12 +88,10 @@ M=D
 def test_push_static():
     command = CommandLine(0, 'push static 100')
     codewriter = CodeWriter()
+    codewriter.vm_filename = 'vm_name'
     expected = """
 // push static 100
-@100
-D=A
-@16
-A=M+D
+@vm_name.100
 D=M
 @SP
 A=M
@@ -108,19 +106,13 @@ M=M+1
 def test_pop_static():
     command = CommandLine(0, 'pop static 3')
     codewriter = CodeWriter()
+    codewriter.vm_filename = 'vm_name'
     expected = """
 // pop static 3
-@3
-D=A
-@16
-D=M+D
-@R15
-M=D
 @SP
 AM=M-1
 D=M
-@R15
-A=M
+@vm_name.3
 M=D
 """
 

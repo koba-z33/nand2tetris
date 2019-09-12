@@ -115,6 +115,17 @@ class CodeWriter():
                 @SP
                 M=M+1
                 """)
+        elif seg == 'static':
+            return textwrap.dedent(f"""
+                // push {seg} {index}
+                @{self.__vm_filename}.{index}
+                D=M
+                @SP
+                A=M
+                M=D
+                @SP
+                M=M+1
+                """)
         else:
             seg_start = self.__seg_start[seg]
             return textwrap.dedent(f"""
@@ -135,21 +146,31 @@ class CodeWriter():
         seg: str = command.arg1
         index: int = command.arg2
         seg_start = self.__seg_start[seg]
-        return textwrap.dedent(f"""
-            // pop {seg} {index}
-            @{index}
-            D=A
-            @{seg_start[0]}
-            D={seg_start[1]}+D
-            @{self.__tmp_pop}
-            M=D
-            @SP
-            AM=M-1
-            D=M
-            @{self.__tmp_pop}
-            A=M
-            M=D
-            """)
+        if seg == 'static':
+            return textwrap.dedent(f"""
+                // pop {seg} {index}
+                @SP
+                AM=M-1
+                D=M
+                @{self.__vm_filename}.{index}
+                M=D
+                """)
+        else:
+            return textwrap.dedent(f"""
+                // pop {seg} {index}
+                @{index}
+                D=A
+                @{seg_start[0]}
+                D={seg_start[1]}+D
+                @{self.__tmp_pop}
+                M=D
+                @SP
+                AM=M-1
+                D=M
+                @{self.__tmp_pop}
+                A=M
+                M=D
+                """)
 
     def __makeArithmetic(self, command: CommandLine) -> str:
         operator_name: str = command.arg1
